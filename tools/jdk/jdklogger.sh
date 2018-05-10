@@ -1,3 +1,4 @@
+#!/bin/bash
 #hannes.ebelt@sap.com
 #create dump of vpserver process each 30min
 #crontab -e: */30 * * * * /opt/netapp/vpserver/jdklogger.sh 
