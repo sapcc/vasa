@@ -20,17 +20,36 @@ except pynetbox.RequestError as e:
 
 
 class VasaProvider:
-    def __init__(self, platform='16', status='1', role='22', tenant='1', **kwargs):
+    """
+    vasa provider
+    """
+    name = None
+    status = None
+    cluster = None
+    role = None
+    tenant = None
+    platform = None
+    ip4 = None
+    ip6 = None
+    vcpus = None
+    memory = None
+    disk = None
+    comments = None
+    customfields = None
+
+    def __init__(self, platform='16', status='1', role='22', tenant='1', cluster='239', **kwargs):
         self.__dict__.update(kwargs)
 
         self.platform = platform
         self.status = status
         self.role = role
         self.tenant = tenant
+        self.cluster = cluster
+        self.ip4 = self.get_ipam_ipaddress()
 
     def create_vp(self):
         try:
-            nb.virtualization.virtual_machine.create(
+            nb.virtualization.virtual_machines.create(
                 name=self.name,
                 status=self.status,
                 cluster=self.cluster,
@@ -38,12 +57,12 @@ class VasaProvider:
                 tenant=self.tenant,
                 platform=self.platform,
                 primary_ip4=self.ip4,
-                primary_ip6=self.ip6,
-                vcpus=self.vcpus,
-                memory=self.memory,
-                disk=self.disk,
-                comments=self.comments,
-                custom_fields=self.customfields
+                #primary_ip6=self.ip6,
+                #vcpus=self.vcpus,
+                #memory=self.memory,
+                #disk=self.disk,
+                #comments=self.comments,
+                #custom_fields=self.customfields
             )
         except pynetbox.RequestError as e:
             print(e.error)
@@ -74,12 +93,13 @@ class VasaProvider:
         except pynetbox.RequestError as e:
             print(e.error)
 
-    def get_vp(self):
+    def get_virtualization_vm(self):
         vips = nb.ipam.ip_addresses.filter('vasa')
         result = []
 
         for vip in vips:
-            r = {}
+            r = dict()
+
             r['address'] = vip.address
             r['id'] = vip.id
             r['description'] = vip.description
@@ -90,11 +110,19 @@ class VasaProvider:
 
         return result
 
+    def get_ipam_ipaddress(self):
+        #need ip_id for vp
+        pass
 
-ip4 = '10.46.76.99'
+    def get_virtualization_cluster(self):
+        #need cluster_id for vp
+        pass
+
+
+ip4 = '8409'
 name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
 
-vasa = VasaProvider()
+vasa = VasaProvider(ip4=ip4, name=name)
 
-for i in vasa.get_vp():
-    print(i)
+vasa.create_vp()
+#vasa.get_vp()
