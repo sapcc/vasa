@@ -1,3 +1,5 @@
+#author: Hannes Ebelt (hannes.ebelt@sap.com)
+
 import ssl, pynetbox, requests, os, urllib3, datetime
 from urllib3.exceptions import InsecureRequestWarning
 
