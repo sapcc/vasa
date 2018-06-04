@@ -45,7 +45,7 @@ class VasaProvider:
         self.role = role
         self.tenant = tenant
         self.cluster = cluster
-        self.ip4 = self.get_ipam_ipaddress()
+        #self.ip4 = self.get_ipam_ipaddress()
 
     def create_vp(self):
         try:
@@ -89,11 +89,16 @@ class VasaProvider:
 
     def delete_vp(self):
         try:
-            nb.virtualization.virtual_machine.delete(id=self.id_vm)
+            nb.virtualization.virtual_machine.delete(id=self.id)
         except pynetbox.RequestError as e:
             print(e.error)
 
-    def get_virtualization_vm(self):
+
+class ipam:
+    def __init__(self,  **kwargs):
+        self.__dict__.update(kwargs)
+
+    def get_ipaddress(self):
         vips = nb.ipam.ip_addresses.filter('vasa')
         result = []
 
@@ -110,19 +115,58 @@ class VasaProvider:
 
         return result
 
-    def get_ipam_ipaddress(self):
-        #need ip_id for vp
+    def update_ipaddress(self):
         pass
 
-    def get_virtualization_cluster(self):
-        #need cluster_id for vp
+    def create_ipaddress(self):
         pass
 
 
+class dcim:
+    def __init__(self,  **kwargs):
+        self.__dict__.update(kwargs)
+
+    def get_site(self):
+        sites = nb.dcim.sites.all()
+        result = []
+
+        for site in sites:
+            r = dict()
+
+            r['name'] = site.name
+            r['id'] = site.id
+            r['slug'] = site.slug
+            r['status'] = site.status
+
+            result.append(r)
+
+        return result
+
+###main
+#platform=VASA Provider
+platform='16'
+#status=active
+status='1'
+#role=Virtual Appliance
+role='22'
+#tenant=Converged Cloud
+tenant='1'
+#cluster=CC BB100 Mgmt
+cluster='239'
+#ip4=10.46.76.99
 ip4 = '8409'
+#name=vasa_bbid
 name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
 
-vasa = VasaProvider(ip4=ip4, name=name)
 
-vasa.create_vp()
-#vasa.get_vp()
+#vasa = VasaProvider(ip4=ip4, name=name)
+#vasa = VasaProvider()
+#vasa.create_vp()
+#for i in vasa.get_ipam_ipaddress():
+#    print i
+
+azone = dcim()
+
+for i in azone.get_site():
+    print(i)
+
