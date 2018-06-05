@@ -1,6 +1,6 @@
 #author: Hannes Ebelt (hannes.ebelt@sap.com)
 
-import ssl, pynetbox, requests, os, urllib3, datetime
+import ssl, pynetbox, requests, os, urllib3, datetime, pprint
 from urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
@@ -168,5 +168,7 @@ name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
 azone = dcim()
 
 for i in azone.get_site():
-    print(i)
-
+    az = i['slug'][:-1]
+    ab = i['slug'][-1]
+    id = i['id']
+    print(az + id)
