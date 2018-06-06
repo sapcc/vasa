@@ -164,22 +164,48 @@ name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
 #vasa.create_vp()
 #for i in vasa.get_ipam_ipaddress():
 #    print i
+#vasa-a-0.cc.la-br-1.cloud.sap
 
 azone = dcim()
+vpip = ipam()
+
+result = []
 
 
 for i in azone.get_site():
+    r = dict()
+    ip = None
     az = i['slug'][:-1]
     ab = i['slug'][-1]
-    id = i['id']
+    sid = i['id']
     status = i['status']
 
     if 1 == status.serialize(['value']):
+        r['st'] = status
         vc = str('vc-' + ab + '-0.cc.' + az + '.cloud.sap')
-        print(status)
-        print(vc)
+        r['vc'] = vc
+        r['ab'] = ab
+        r['az'] = az
 
         try:
-            print(socket.gethostbyname(vc))
+            ip = socket.gethostbyname(vc)
+            ip = ip[:-3]
         except socket.gaierror as e:
-            print(e.errno)
+            print(e.message)
+
+        r['ip'] = ip
+
+        result.append(r)
+
+for a in result:
+    for b in vpip.get_ipaddress():
+        x = str(b['address'])
+        x = x[:-5]
+        if x == a['ip']:
+            print(b['id'])
+            print(x)
+            print(a['ip'])
+            print(a['vc'])
+            print('vasa-' + a['ab'] + '-0.cc.' + a['az'] + '.cloud.sap')
+        else:
+            continue
