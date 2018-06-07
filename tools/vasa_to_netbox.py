@@ -44,7 +44,7 @@ class VasaProvider:
         self.status = status
         self.role = role
         self.tenant = tenant
-        self.cluster = cluster
+        #self.cluster = cluster
         #self.ip4 = self.get_ipam_ipaddress()
 
     def create_vp(self):
@@ -69,7 +69,7 @@ class VasaProvider:
 
     def update_vp(self):
         try:
-            nb.virtualization.virtual_machine.save(
+            nb.virtualization.virtual_machines.save(
                 name=self.name,
                 status=self.status,
                 cluster=self.cluster,
@@ -89,9 +89,24 @@ class VasaProvider:
 
     def delete_vp(self):
         try:
-            nb.virtualization.virtual_machine.delete(id=self.id)
+            nb.virtualization.virtual_machines.delete(id=self.id)
         except pynetbox.RequestError as e:
             print(e.error)
+
+    def get_vm(self):
+        vms = nb.virtualization.virtual_machines.all()
+        result = []
+
+        for vm in vms:
+            r = dict()
+
+            r['name'] = vm.name
+            r['id'] = vm.id
+            r['cluster'] = vm.cluster
+
+            result.append(r)
+
+        return result
 
 
 class ipam:
@@ -109,7 +124,7 @@ class ipam:
             r['id'] = vip.id
             r['description'] = vip.description
             r['status'] = vip.status
-            r['tenant'] = vijjp.tenant
+            r['tenant'] = vip.tenant
 
             result.append(r)
 
@@ -152,17 +167,16 @@ role='22'
 #tenant=Converged Cloud
 tenant='1'
 #cluster=CC BB100 Mgmt eg. 239
-cluster='239'
+#cluster='239'
 #ip4=10.46.76.99
 ip4 = '8409'
 #name=vasa_bbid
-name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
+#name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
 #
 comments = 'created by automation: {:%Y-%m-%d-%H-%M-%S}'.format(datetime.datetime.now())
 
-
+vasa = VasaProvider()
 #vasa = VasaProvider(ip4=ip4, name=name, cluster=cluster, comments=comments)
-#vasa = VasaProvider()
 #vasa.create_vp()
 
 azone = dcim()
@@ -208,3 +222,11 @@ for a in result:
             print('vasa-' + a['ab'] + '-0.cc.' + a['az'] + '.cloud.sap')
         else:
             continue
+'''
+
+
+for i in vasa.get_vm():
+    print(i['name'])
+    print(i['cluster'])
+    print(i['id'])
+'''
