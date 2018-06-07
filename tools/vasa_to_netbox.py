@@ -37,7 +37,7 @@ class VasaProvider:
     comments = None
     customfields = None
 
-    def __init__(self, platform='16', status='1', role='22', tenant='1', cluster='239', **kwargs):
+    def __init__(self, platform='16', status='1', role='22', tenant='1', **kwargs):
         self.__dict__.update(kwargs)
 
         self.platform = platform
@@ -61,7 +61,7 @@ class VasaProvider:
                 #vcpus=self.vcpus,
                 #memory=self.memory,
                 #disk=self.disk,
-                #comments=self.comments,
+                comments=self.comments,
                 #custom_fields=self.customfields
             )
         except pynetbox.RequestError as e:
@@ -109,7 +109,7 @@ class ipam:
             r['id'] = vip.id
             r['description'] = vip.description
             r['status'] = vip.status
-            r['tenant'] = vip.tenant
+            r['tenant'] = vijjp.tenant
 
             result.append(r)
 
@@ -151,20 +151,19 @@ status='1'
 role='22'
 #tenant=Converged Cloud
 tenant='1'
-#cluster=CC BB100 Mgmt
+#cluster=CC BB100 Mgmt eg. 239
 cluster='239'
 #ip4=10.46.76.99
 ip4 = '8409'
 #name=vasa_bbid
 name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
+#
+comments = 'created by automation: {:%Y-%m-%d-%H-%M-%S}'.format(datetime.datetime.now())
 
 
-#vasa = VasaProvider(ip4=ip4, name=name)
+#vasa = VasaProvider(ip4=ip4, name=name, cluster=cluster, comments=comments)
 #vasa = VasaProvider()
 #vasa.create_vp()
-#for i in vasa.get_ipam_ipaddress():
-#    print i
-#vasa-a-0.cc.la-br-1.cloud.sap
 
 azone = dcim()
 vpip = ipam()
