@@ -102,7 +102,7 @@ class VasaProvider:
 
             r['name'] = vm.name
             r['id'] = vm.id
-            r['cluster'] = vm.cluster
+            r['cluster_id'] = vm.cluster.id
 
             result.append(r)
 
@@ -169,7 +169,7 @@ tenant='1'
 #cluster=CC BB100 Mgmt eg. 239
 #cluster='239'
 #ip4=10.46.76.99
-ip4 = '8409'
+#ip4 = '8409'
 #name=vasa_bbid
 #name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
 #
@@ -179,11 +179,12 @@ vasa = VasaProvider()
 #vasa = VasaProvider(ip4=ip4, name=name, cluster=cluster, comments=comments)
 #vasa.create_vp()
 
+
+
 azone = dcim()
 vpip = ipam()
 
 result = []
-
 
 for i in azone.get_site():
     r = dict()
@@ -222,11 +223,10 @@ for a in result:
             print('vasa-' + a['ab'] + '-0.cc.' + a['az'] + '.cloud.sap')
         else:
             continue
+
 '''
-
-
 for i in vasa.get_vm():
-    print(i['name'])
-    print(i['cluster'])
-    print(i['id'])
+    print('vm_name: ', i['name'])
+    print('cluster_id: ', i['cluster_id'])
+    print('vm_id: ',  i['id'])
 '''
