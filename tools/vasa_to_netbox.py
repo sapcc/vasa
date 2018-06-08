@@ -158,41 +158,19 @@ class dcim:
         return result
 
 ###main
-#platform=VASA Provider
-platform='16'
-#status=active
-status='1'
-#role=Virtual Appliance
-role='22'
-#tenant=Converged Cloud
-tenant='1'
-#cluster=CC BB100 Mgmt eg. 239
-#cluster='239'
-#ip4=10.46.76.99
-#ip4 = '8409'
-#name=vasa_bbid
-#name = 'vasa-bb110.cc.ap-ae-1.cloud.sap'
-#
-comments = 'created by automation: {:%Y-%m-%d-%H-%M-%S}'.format(datetime.datetime.now())
-
 vasa = VasaProvider()
-#vasa = VasaProvider(ip4=ip4, name=name, cluster=cluster, comments=comments)
-#vasa.create_vp()
-
-
-
 azone = dcim()
 vpip = ipam()
 
 result = []
 
-for i in azone.get_site():
+for site in azone.get_site():
     r = dict()
     ip = None
-    az = i['slug'][:-1]
-    ab = i['slug'][-1]
-    sid = i['id']
-    status = i['status']
+    az = site['slug'][:-1]
+    ab = site['slug'][-1]
+    sid = site['id']
+    status = site['status']
 
     if 1 == status.serialize(['value']):
         r['st'] = status
@@ -209,6 +187,10 @@ for i in azone.get_site():
 
         r['ip'] = ip
 
+        for vm in vasa.get_vm():
+            if vm['name'] == vc:
+                r['cluster'] = vm['cluster_id']
+
         result.append(r)
 
 for a in result:
@@ -216,17 +198,26 @@ for a in result:
         x = str(b['address'])
         x = x[:-5]
         if x == a['ip']:
-            print(b['id'])
-            print(x)
-            print(a['ip'])
-            print(a['vc'])
-            print('vasa-' + a['ab'] + '-0.cc.' + a['az'] + '.cloud.sap')
+            ip4 = b['id']
+            ipam_subnet = x
+            vc_subnet = a['ip']
+            vc_name = a['vc']
+            vp_name = 'vasa-' + a['ab'] + '-0.cc.' + a['az'] + '.cloud.sap'
+            cluster_id = a['cluster']
+            comments = 'created by automation: {:%Y-%m-%d-%H-%M-%S}'.format(datetime.datetime.now())
+
+            '''
+            create vasa provider object in netbox by collected data
+            '''
+            print('ip_id: ', ip4)
+            print('ipam_ip: ', ipam_subnet)
+            print('vc_ip: ', vc_subnet)
+            print('vc_name: ', vc_name)
+            print('vp_name: ', vp_name)
+            print('cluster_id: ', cluster_id)
+            print('comments: ', comments)
+
+            vasa = VasaProvider(ip4=ip4, name=vp_name, cluster=cluster_id, comments=comments)
+            vasa.create_vp()
         else:
             continue
-
-'''
-for i in vasa.get_vm():
-    print('vm_name: ', i['name'])
-    print('cluster_id: ', i['cluster_id'])
-    print('vm_id: ',  i['id'])
-'''
