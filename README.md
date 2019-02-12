@@ -10,7 +10,7 @@ This repository contains classes and modules to manage the NetApp VASA Appliance
 
 ## API Documentation
 
-REST API Documentation: `https://<url>/api/rest/swagger-ui.html#/`
+REST API Documentation: `https://<url>:8143/api/rest/swagger-ui.html#/`
 
 ## Structure
 
