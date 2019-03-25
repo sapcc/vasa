@@ -1,6 +1,5 @@
 # SAP Ansible Modules for NetApp VASA Appliance
 
-!! Started with refactoring !!
 This repository contains classes and modules to manage the NetApp VASA Appliances of SAP Converged Cloud.
 
 ## Requirements
@@ -8,6 +7,7 @@ This repository contains classes and modules to manage the NetApp VASA Appliance
   * NetApp VASA Provider Version 7.2.1
   * Ansible Version 2.6.2
   * Python Version l2.7.15rc1
+  * pyVasa package
 
 ## API Documentation
 
@@ -18,27 +18,14 @@ REST API Documentation: `https://<url>:8143/api/rest/swagger-ui.html#/`
 ```
 .
 └── ansible
-    ├── module_utils
-    │   └── storage
-    │       └── netapp
-    │           └── vasa
     └── modules
         └── storage
             └── netapp
 ```
 
-### Classes
+### pyVasa package
 
-We decided to use classes because we reuse our code in other tools as well.
-You will find the respective method in the same namespace like the API documentation.
-
-Example:
-
-"GET - 'datastore information' - datastore"
-`Datastore -> modules_utils/storage/netapp/vasa/datastore.py`
-
-"POST - 'enable/disable vp' - product-capabilities"
-`Datastore -> modules_utils/storage/netapp/vasa/product_capability.py`
+Use pip install to install pyVasa package.
 
 ### Modules
 
