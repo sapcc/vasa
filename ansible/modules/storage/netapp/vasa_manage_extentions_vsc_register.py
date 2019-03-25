@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.storage.netapp.vasa.manage_extentions import ManageExtentions
+from pyVasa.manage_extentions import ManageExtentions
 
 __metaclass__ = type
 

@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible.module_utils.storage.netapp.vasa.storage_systems import StorageSystems
-from ansible.module_utils.storage.netapp.vasa.vasa_connect import VasaConnection
+from pyVasa.storage_systems import StorageSystems
+from pyVasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
