@@ -2,7 +2,6 @@ import requests
 import os
 from urllib3.exceptions import InsecureRequestWarning
 
-
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
