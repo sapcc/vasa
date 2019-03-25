@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_systems_controller_show
 
-short_description: storage systems of netapp vasa unified appliance
+short_description: storage systems of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show storage controller details from vasa appliance
+- show storage controller details from pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -58,7 +58,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "show storage controller details from vasa appliance {{ inventory_hostname }}"
+ - name: "show storage controller details from pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_systems_controller_show
      host: "{{ inventory_hostname }}"

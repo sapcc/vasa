@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_ssh
 
-short_description: managing netapp vasa unified appliance
+short_description: managing netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- Enable/Disable ssh on netapp vasa appliance
+- Enable/Disable ssh on netapp pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -57,7 +57,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "change ssh service for vasa appliance {{ inventory_hostname }}"
+ - name: "change ssh service for pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_ssh
      host: "{{ inventory_hostn   ame }}"

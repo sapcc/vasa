@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_route_delete
 
-short_description: managing netapp vasa unified appliance
+short_description: managing netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- delete static route from netapp unified vasa appliance
+- delete static route from netapp unified pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -60,7 +60,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "delete static route from vasa appliance {{ inventory_hostname }}"
+ - name: "delete static route from pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_route_delete
      host: "{{ inventory_hostname }}"

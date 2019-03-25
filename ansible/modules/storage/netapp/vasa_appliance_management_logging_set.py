@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_logging_set
 
-short_description: managing netapp vasa unified appliance
+short_description: managing netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- set log level for a service type of netapp vasa appliance
+- set log level for a service type of netapp pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -60,7 +60,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "set log level for vasa appliance {{ inventory_hostname }}"
+ - name: "set log level for pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_logging_set
      host: "{{ inventory_hostname }}"

@@ -1,12 +1,12 @@
-import json, requests
+import requests
 from urllib3.exceptions import InsecureRequestWarning
-from ansible.module_utils.basic import *
+
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class Commons:
+class VspherePrivilegdeValidations:
 	def __init__(self, port=None, url=None, token=None):
 		self.port = port
 		self.url = "https://" + url
@@ -14,18 +14,17 @@ class Commons:
 		if token is not None:
 			self.token = token
 
-	def task_status(self, task_id=None):
-		api_endpoint = '/api/rest/admin/task/status'
+	def show_privilidges(self, privilegeId=None):
+		api_endpoint = '/api/rest/vcenter/privileges?privilegeId=' + privilegeId
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
 			'Accept': 'application/json',
-			'vmware-api-session-id': self.token,
-			'task-id': task_id
+			'vmware-api-session-id': self.token
 		}
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		task_status = r.json()
-		task_status['status_code'] = r.status_code
+		priv_details = r.json()
+		priv_details['status_code'] = r.status_code
 
-		return task_status
+		return priv_details

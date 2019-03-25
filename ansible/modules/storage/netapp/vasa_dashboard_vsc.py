@@ -21,20 +21,20 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_dashboard_vsc
 
-short_description: managing dashboard of netapp vasa unified appliance
+short_description: managing dashboard of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
-description: fetch data from vsc dashboard of the vasa appliance
+description: fetch data from vsc dashboard of the pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -50,7 +50,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "fetch data from vsc dashbaord of vasa appliance {{ inventory_hostname }}"
+ - name: "fetch data from vsc dashbaord of pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_dashboard_vsc
      host: "{{ inventory_hostname }}"

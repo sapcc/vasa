@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_systems_flexvol_list
 
-short_description: storage systems of netapp vasa unified appliance
+short_description: storage systems of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list all flexvols of given SVM of vasa appliance
+- list all flexvols of given SVM of pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -58,7 +58,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "list all flexvols of given SVM of vasa appliance {{ inventory_hostname }}"
+ - name: "list all flexvols of given SVM of pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_systems_flexvol_list
      host: "{{ inventory_hostname }}"

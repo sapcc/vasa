@@ -23,22 +23,22 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_reports_datastore_list
 
-short_description: reports of netapp vasa unified appliance
+short_description: reports of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- generate vsc datastores report of netapp vasa appliance
+- generate vsc datastores report of netapp pyVasa appliance
 
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -54,7 +54,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "generate vsc datastores report of vasa appliance {{ inventory_hostname }}"
+ - name: "generate vsc datastores report of pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_reports_datastore_list
      host: "{{ inventory_hostname }}"

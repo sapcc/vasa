@@ -1,12 +1,12 @@
-import requests
+import json, requests
 from urllib3.exceptions import InsecureRequestWarning
-from ansible.module_utils.basic import *
+
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class Dashboard:
+class Commons:
 	def __init__(self, port=None, url=None, token=None):
 		self.port = port
 		self.url = "https://" + url
@@ -14,17 +14,18 @@ class Dashboard:
 		if token is not None:
 			self.token = token
 
-	def vsc_dashboard(self):
-		api_endpoint = '/api/rest/admin/dashboard'
+	def task_status(self, task_id=None):
+		api_endpoint = '/api/rest/admin/task/status'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
 			'Accept': 'application/json',
-			'vmware-api-session-id': self.token
+			'vmware-api-session-id': self.token,
+			'task-id': task_id
 		}
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		vsc_dashboard = r.json()
-		vsc_dashboard['status_code'] = r.status_code
+		task_status = r.json()
+		task_status['status_code'] = r.status_code
 
-		return vsc_dashboard
+		return task_status

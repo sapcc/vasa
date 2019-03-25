@@ -20,30 +20,30 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_password_reset
 
-short_description: managing netapp vasa unified appliance
+short_description: managing netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
-description: reset the password for maint/administration user of vasa appliance
+description: reset the password for maint/administration user of pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -64,7 +64,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "reset the password for maint/administration user of vasa appliance {{ inventory_hostname }}"
+ - name: "reset the password for maint/administration user of pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_password_reset
      host: "{{ inventory_hostname }}"

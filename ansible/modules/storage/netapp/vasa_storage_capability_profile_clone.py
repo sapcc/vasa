@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_capability_profile_clone
 
-short_description: storage capabilities of netapp vasa unified appliance
+short_description: storage capabilities of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- clone a storage capabilitiy profile for the netapp unified vasa appliance
+- clone a storage capabilitiy profile for the netapp unified pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -113,7 +113,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "clone a storage capabilitiy profile of vasa appliance {{ inventory_hostname }}"
+ - name: "clone a storage capabilitiy profile of pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_capability_profile_clone
      host: "{{ inventory_hostname }}"

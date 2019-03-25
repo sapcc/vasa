@@ -1,6 +1,6 @@
 import requests
 from urllib3.exceptions import InsecureRequestWarning
-from ansible.module_utils.basic import *
+
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""

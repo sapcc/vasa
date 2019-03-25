@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_commons_task_status
 
-short_description: get task status of netapp vasa unified appliance
+short_description: get task status of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- get task status of netapp vasa appliance
+- get task status of netapp pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 

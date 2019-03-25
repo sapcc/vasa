@@ -20,37 +20,37 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_manage_extentions_details
 
-short_description: manage extentions of netapp vasa unified appliance
+short_description: manage extentions of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list details of netapp VSC vasa appliance
+- list details of netapp VSC pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 '''
 
 EXAMPLES = '''
- - name: "list details of VSC vasa appliance {{ inventory_hostname }}"
+ - name: "list details of VSC pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_manage_extentions_details
      host: "{{ inventory_hostname }}"

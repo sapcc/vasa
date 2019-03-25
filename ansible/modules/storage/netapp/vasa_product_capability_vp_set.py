@@ -23,26 +23,26 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_product_capability_vp_set
 
-short_description: product capabilities of netapp vasa unified appliance
+short_description: product capabilities of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- enable/disable vp of netapp vasa appliance
+- enable/disable vp of netapp pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -65,7 +65,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "enable/disable vp of netapp vasa appliance {{ inventory_hostname }}"
+ - name: "enable/disable vp of netapp pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_product_capability_vp_set
      host: "{{ inventory_hostname }}"

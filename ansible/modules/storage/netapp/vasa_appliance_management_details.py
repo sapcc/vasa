@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.storage.netapp.vasa.appliance_management import ApplianceManagement
+from pyVasa.appliance_management import ApplianceManagement
 
 __metaclass__ = type
 
@@ -20,37 +20,37 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_details
 
-short_description: managing netapp vasa unified appliance
+short_description: managing netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list details of netapp unified vasa appliance
+- list details of netapp unified pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 '''
 
 EXAMPLES = '''
- - name: "list details of vasa appliance {{ inventory_hostname }}"
+ - name: "list details of pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_details
      host: "{{ inventory_hostname }}"

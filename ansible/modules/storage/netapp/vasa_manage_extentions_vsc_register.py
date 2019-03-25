@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_manage_extentions_vsc_register
 
-short_description: manage extentions of netapp vasa unified appliance
+short_description: manage extentions of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- register netapp VSC vasa appliance to vcenter
+- register netapp VSC pyVasa appliance to vcenter
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - vasa appliance username for login.
+    - pyVasa appliance username for login.
     required: true
 
   password:
     description:
-    - vasa appliance password for login.
+    - pyVasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -71,7 +71,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "register VSC vasa appliance {{ inventory_hostname }} to vcenter"
+ - name: "register VSC pyVasa appliance {{ inventory_hostname }} to vcenter"
    local_action:
      module: vasa_manage_extentions_register
      host: "{{ inventory_hostname }}"

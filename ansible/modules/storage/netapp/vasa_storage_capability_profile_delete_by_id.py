@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_capability_profile_delete_by_id
 
-short_description: storage capabilities of netapp vasa unified appliance
+short_description: storage capabilities of netapp pyVasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- delete storage capabilitiy profile by id on vasa appliance
+- delete storage capabilitiy profile by id on pyVasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the vasa unified appliance to manage.
+    - The ip or name of the pyVasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the vasa unified appliance to manage.
+    - The port of the pyVasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -58,7 +58,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "delete storage capabilitiy profile by id on vasa appliance {{ inventory_hostname }}"
+ - name: "delete storage capabilitiy profile by id on pyVasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_capability_profile_delete_by_id
      host: "{{ inventory_hostname }}"
