@@ -1,4 +1,4 @@
-# SAP Ansible Modules for NetApp VASA Appliance
+# SAP Ansible Modules and Python Package for NetApp VASA Appliance
 
 This repository contains classes and modules to manage the NetApp VASA Appliances of SAP Converged Cloud.
 
