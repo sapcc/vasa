@@ -9,8 +9,9 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class VasaConnection:
     token = None
 
-    def __init__(self, url=None, port=None, vcenter_user=None, vcenter_password=None):
-        self.port = port
+    def __init__(self, url=None, port=None, vcenter_user=None, vcenter_password=None, api_version='1.0'):
+        self.api = api_version
+        self.port = port + "/" + self.api
         self.url = "https://" + url
         self.vcenter_user = vcenter_user
         self.vcenter_password = vcenter_password

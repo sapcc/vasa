@@ -7,8 +7,9 @@ os.environ["CURL_CA_BUNDLE"] = ""
 
 
 class ApplianceManagement:
-	def __init__(self, port=None, url=None, vp_user=None, vp_password=None):
-		self.port = port
+	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
+		self.api = api_version
+		self.port = port + "/" + self.api
 		self.url = "https://" + url
 		self.vp_user = vp_user
 		self.vp_password = vp_password
