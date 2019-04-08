@@ -7,8 +7,9 @@ os.environ["CURL_CA_BUNDLE"] = ""
 
 
 class ManageExtentions:
-	def __init__(self, port=None, url=None, vp_user=None, vp_password=None):
-		self.port = port
+	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
+		self.api = api_version
+		self.port = port + "/" + self.api
 		self.url = "https://" + url
 		self.vasa_host = url
 

@@ -7,8 +7,9 @@ os.environ["CURL_CA_BUNDLE"] = ""
 
 
 class Commons:
-	def __init__(self, port=None, url=None, token=None):
-		self.port = port
+	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
+		self.api = api_version
+		self.port = port + "/" + self.api
 		self.url = "https://" + url
 
 		if token is not None:
