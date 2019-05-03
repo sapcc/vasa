@@ -14,7 +14,7 @@ class ApplianceManagement:
 		self.vp_user = vp_user
 		self.vp_password = vp_password
 
-	def status_ssh_management_appliance(self):
+	def get_ssh_status(self):
 		api_endpoint = '/api/rest/appliance/management/ssh'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -30,7 +30,7 @@ class ApplianceManagement:
 
 		return ssh_status
 
-	def enable_ssh_management_appliance(self):
+	def set_ssh_enable(self):
 		api_endpoint = '/api/rest/appliance/management/ssh/enable'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -46,7 +46,7 @@ class ApplianceManagement:
 
 		return ssh_enable
 
-	def disable_ssh_management_appliance(self):
+	def set_ssh_disable(self):
 		api_endpoint = '/api/rest/appliance/management/ssh/disable'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -62,7 +62,7 @@ class ApplianceManagement:
 
 		return ssh_disable
 
-	def list_appliance_details(self):
+	def get_appliance_details(self):
 		api_endpoint = '/api/rest/appliance/management/appliance-details'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -78,7 +78,7 @@ class ApplianceManagement:
 
 		return details
 
-	def list_network_settings(self):
+	def get_network_settings(self):
 		api_endpoint = '/api/rest/appliance/management/network-settings'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -94,7 +94,7 @@ class ApplianceManagement:
 
 		return nw_settings
 
-	def modify_network_settings(self, dns_server=None, gw=None, ip=None, ip_family=None, mode=None, nmask=None):
+	def set_network_settings(self, dns_server=None, gw=None, ip=None, ip_family=None, mode=None, nmask=None):
 		api_endpoint = '/api/rest/appliance/management/network-settings'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -116,12 +116,12 @@ class ApplianceManagement:
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		nw_modify = r.json()
-		nw_modify['status_code'] = r.status_code
+		set_nw = r.json()
+		set_nw['status_code'] = r.status_code
 
-		return nw_modify
+		return set_nw
 
-	def list_ntp_server(self):
+	def get_ntp_server(self):
 		api_endpoint = '/api/rest/appliance/management/ntp-server'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -171,7 +171,7 @@ class ApplianceManagement:
 
 		return bundle
 
-	def available_time_zones(self):
+	def get_time_zones(self):
 		api_endpoint = '/api/rest/appliance/management/available-time-zones'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -187,7 +187,7 @@ class ApplianceManagement:
 
 		return timezones
 
-	def show_timezone(self):
+	def get_time_zone(self):
 		api_endpoint = '/api/rest/appliance/management/time-zone'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -203,7 +203,7 @@ class ApplianceManagement:
 
 		return timezone_show
 
-	def set_timezone(self, timezone=None):
+	def set_time_zone(self, timezone=None):
 		api_endpoint = '/api/rest/appliance/management/time-zone'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -220,7 +220,7 @@ class ApplianceManagement:
 
 		return timezone
 
-	def show_logging(self, service_type=None):
+	def get_logging(self, service_type=None):
 		api_endpoint = '/api/rest/appliance/management/logging'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -255,7 +255,7 @@ class ApplianceManagement:
 
 		return log_level
 
-	def reset_password(self, user=None, old_pw=None, new_pw=None):
+	def set_password(self, user=None, old_pw=None, new_pw=None):
 		api_endpoint = '/api/rest/appliance/management/password/reset'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -291,7 +291,7 @@ class ApplianceManagement:
 
 		return ping
 
-	def show_route(self):
+	def get_static_route(self):
 		api_endpoint = '/api/rest/appliance/management/network-settings/static-route'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -307,7 +307,7 @@ class ApplianceManagement:
 
 		return route_show
 
-	def add_route(self, host=None, gateway=None):
+	def set_static_route(self, host=None, gateway=None):
 		api_endpoint = '/api/rest/appliance/management/network-settings/static-route'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -325,7 +325,7 @@ class ApplianceManagement:
 
 		return route_add
 
-	def delete_route(self, host=None, gateway=None):
+	def delete_static_route(self, host=None, gateway=None):
 		api_endpoint = '/api/rest/appliance/management/network-settings/static-route'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -343,7 +343,7 @@ class ApplianceManagement:
 
 		return route_delete
 
-	def show_certificate(self, service_type=None):
+	def get_certificate(self, service_type=None):
 		api_endpoint = '/api/rest/appliance/management/certificate'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -361,7 +361,7 @@ class ApplianceManagement:
 
 		return cert_show
 
-	def import_certificate(self, service_type=None, certificate=None):
+	def set_certificate(self, service_type=None, certificate=None):
 		api_endpoint = '/api/rest/appliance/management/certificate'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -384,7 +384,7 @@ class ApplianceManagement:
 
 		return cert_import
 
-	def generate_certificate(self, service_type=None):
+	def generate_csr(self, service_type=None):
 		api_endpoint = '/api/rest/appliance/management/certificate/generate-csr'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -417,3 +417,80 @@ class ApplianceManagement:
 		reset_cert['status_code'] = r.status_code
 
 		return reset_cert
+
+	def update_sys_log(self, uuid=None, host=None, level=None, pattern=None, log_port=None, token=None):
+		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
+		url_action = self.url + ":" + self.port + api_endpoint
+		headers = {
+			'Accept': 'application/json',
+			'vmware-api-session-id': token,
+			'uuid': uuid
+		}
+
+		payload = {
+			"hostname": host,
+			"logLevel": level,
+			"pattern": pattern,
+			"port": log_port
+			}
+
+		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
+
+		syslog_modify = r.json()
+		syslog_modify['status_code'] = r.status_code
+
+		return syslog_modify
+
+	def set_sys_log(self, host=None, level=None, pattern=None, log_port=None, token=None):
+		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
+		url_action = self.url + ":" + self.port + api_endpoint
+		headers = {
+			'Accept': 'application/json',
+			'vmware-api-session-id': token
+		}
+
+		payload = {
+			"hostname": host,
+			"logLevel": level,
+			"pattern": pattern,
+			"port": log_port
+		}
+
+		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
+
+		syslog_set = r.json()
+		syslog_set['status_code'] = r.status_code
+
+		return syslog_set
+
+	def get_sys_log(self, uuid=None, token=None):
+		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
+		url_action = self.url + ":" + self.port + api_endpoint
+		headers = {
+			'Accept': 'application/json',
+			'vmware-api-session-id': token,
+			'uuid': uuid
+		}
+
+		r = requests.get(url=url_action, headers=headers, verify=False)
+
+		syslog_details = r.json()
+		syslog_details['status_code'] = r.status_code
+
+		return syslog_details
+
+	def delete_sys_log(self, uuid=None, token=None):
+		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
+		url_action = self.url + ":" + self.port + api_endpoint
+		headers = {
+			'Accept': 'application/json',
+			'vmware-api-session-id': token,
+			'uuid': uuid
+		}
+
+		r = requests.delete(url=url_action, headers=headers, verify=False)
+
+		syslog_del = r.json()
+		syslog_del['status_code'] = r.status_code
+
+		return syslog_del
