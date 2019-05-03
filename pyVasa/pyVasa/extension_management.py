@@ -6,7 +6,7 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class ManageExtentions:
+class ExtentionManagement:
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port + "/" + self.api
@@ -19,7 +19,7 @@ class ManageExtentions:
 		if vp_password is not None:
 			self.vp_password = vp_password
 
-	def show_details_vsc(self):
+	def get_vsc_status(self):
 		api_endpoint = '/api/rest/admin/vsc'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
