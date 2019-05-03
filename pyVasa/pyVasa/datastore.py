@@ -15,7 +15,7 @@ class Datastore:
 		if token is not None:
 			self.token = token
 
-	def mount_on_host(self, container_id=None, ds_name=None, ds_type=None, host_id=None):
+	def mount_datastore_on_host(self, container_id=None, ds_name=None, ds_type=None, host_id=None):
 		api_endpoint = '/api/rest/admin/datastore/mount-on-host'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -37,7 +37,7 @@ class Datastore:
 
 		return mount
 
-	def mount_on_additional_hosts(self, ds_name=None, ds_type=None, host_ids=None):
+	def mount_datastore_on_additional_hosts(self, ds_name=None, ds_type=None, host_ids=None):
 		api_endpoint = '/api/rest/admin/datastore/mount-on-additional-hosts'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -60,7 +60,7 @@ class Datastore:
 
 		return mounts
 
-	def unmount(self, ds_name=None, ds_type=None, host_ids=None):
+	def unmount_datastore(self, ds_name=None, ds_type=None, host_ids=None):
 		api_endpoint = '/api/rest/admin/datastore/unmount'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -83,7 +83,7 @@ class Datastore:
 
 		return mounts
 
-	def datastore_create(self, cluster_ip=None, ds_type=None, scp=None, description=None, flexvol=None,
+	def create_datastore(self, cluster_ip=None, ds_type=None, scp=None, description=None, flexvol=None,
 	                     ds_name=None, protocol=None, target=None, vserver=None):
 		api_endpoint = '/api/rest/admin/datastore'
 		url_action = self.url + ":" + self.port + api_endpoint
@@ -113,7 +113,7 @@ class Datastore:
 
 		return ds_create
 
-	def datastore_delete(self, ds_type=None, ds_moref=None):
+	def delete_datastore(self, ds_type=None, ds_moref=None):
 		api_endpoint = '/api/rest/admin/datastore'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -130,7 +130,7 @@ class Datastore:
 
 		return ds_delete
 
-	def datastore_details(self, ds_type=None, ds_name=None):
+	def get_datastore(self, ds_type=None, ds_name=None):
 		api_endpoint = '/api/rest/admin/datastore'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -147,7 +147,7 @@ class Datastore:
 
 		return ds_details
 
-	def datastore_cluster_filter(self, scp=None, protocol=None):
+	def get_datastore_clusters(self, scp=None, protocol=None):
 		api_endpoint = '/api/rest/admin/datastore/clusters'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -164,7 +164,7 @@ class Datastore:
 
 		return ds_cfilter
 
-	def datastore_aggregates_filter(self, scp=None, cluster=None, vserver=None):
+	def get_aggregates_for_scp(self, scp=None, cluster=None, vserver=None):
 		api_endpoint = '/api/rest/admin/datastore/provisioning/aggregates/forscp'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -182,7 +182,7 @@ class Datastore:
 
 		return ds_afilter
 
-	def storage_add(self, ds_type=None, ds_name=None, cluster_ip=None, scp=None, volume=None, vserver=None):
+	def add_storage(self, ds_type=None, ds_name=None, cluster_ip=None, scp=None, volume=None, vserver=None):
 		api_endpoint = '/api/rest/admin/datastore/storage'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -210,7 +210,7 @@ class Datastore:
 
 		return s_add
 
-	def storage_remove(self, ds_type=None, ds_name=None, volume=None):
+	def delete_storage(self, ds_type=None, ds_name=None, volume=None):
 		api_endpoint = '/api/rest/admin/datastore/storage'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
