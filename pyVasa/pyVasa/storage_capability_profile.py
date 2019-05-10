@@ -17,7 +17,7 @@ class StorageCapability:
 		if token is not None:
 			self.token = token
 
-	def list_storage_capability_profile(self):
+	def get_storage_capability_profiles(self):
 		api_endpoint = '/api/rest/admin/storage-capabilities'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -82,8 +82,6 @@ class StorageCapability:
 			'vmware-api-session-id': self.token
 		}
 
-		#TODO
-		# ''' Difference naming of profile name in method put '''
 		payload = {
 			'storageCapabilityProfile': {
 				'name': profile_name,
@@ -125,7 +123,7 @@ class StorageCapability:
 
 		return delete_profiles
 
-	def delete_storage_capability_profile_id(self, profile_id=None):
+	def delete_storage_capabilities_by_id(self, profile_id=None):
 		api_endpoint = '/api/rest/admin/storage-capabilities/'
 		url_action = self.url + ":" + self.port + api_endpoint + profile_id
 		headers = {
@@ -140,7 +138,7 @@ class StorageCapability:
 
 		return delete_profile_id
 
-	def show_storage_capability_profile_id(self, profile_id=None):
+	def get_storage_capabilities_by_id(self, profile_id=None):
 		api_endpoint = '/api/rest/admin/storage-capabilities/'
 		url_action = self.url + ":" + self.port + api_endpoint + profile_id
 		headers = {
@@ -155,7 +153,7 @@ class StorageCapability:
 
 		return show_profile_id
 
-	def clone_storage_capability_profile(self, profile_name=None,
+	def clone_storage_capabilities(self, profile_name=None,
 	                                     description=None, qos=None,
 	                                     compression=None, deduplication=None,
 	                                     encryption=None, iops=None,
@@ -196,7 +194,7 @@ class StorageCapability:
 
 		return clone_profile
 
-	def list_storage_capability_profile_names(self):
+	def get_storage_capabilities_profile_names(self):
 		api_endpoint = '/api/rest/admin/storage-capabilities/profile-names'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
