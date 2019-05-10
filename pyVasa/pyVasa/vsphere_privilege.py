@@ -6,7 +6,7 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class VspherePrivilegdeValidations:
+class VspherePrivilege:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port + "/" + self.api
@@ -15,7 +15,7 @@ class VspherePrivilegdeValidations:
 		if token is not None:
 			self.token = token
 
-	def show_privilidges(self, privilegeId=None):
+	def get_vcenter_privileges(self, privilegeId=None):
 		api_endpoint = '/api/rest/vcenter/privileges?privilegeId=' + privilegeId
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
