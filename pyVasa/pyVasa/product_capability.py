@@ -15,7 +15,7 @@ class ProductCapability:
 		if token is not None:
 			self.token = token
 
-	def details_product_capability(self):
+	def get_product_capabilities(self):
 		api_endpoint = '/api/rest/admin/product-capabilities'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -30,7 +30,7 @@ class ProductCapability:
 
 		return details
 
-	def status_product_capability(self):
+	def get_server_status(self):
 		api_endpoint = '/api/rest/admin/product-capabilities/server-status'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -45,7 +45,7 @@ class ProductCapability:
 
 		return status
 
-	def enable_disable_vasa_provider(self, state=None, vp_password=None):
+	def set_vp_status(self, state=None, vp_password=None):
 		api_endpoint = '/api/rest/admin/product-capabilities/vp'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -65,7 +65,7 @@ class ProductCapability:
 
 		return vp
 
-	def enable_disable_sra(self, state=None, vp_password=None):
+	def set_sra_status(self, state=None, vp_password=None):
 		api_endpoint = '/api/rest/admin/product-capabilities/sra'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
