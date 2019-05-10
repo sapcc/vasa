@@ -11,14 +11,15 @@ class UserAuthentication:
 
     def __init__(self, url=None, port=None, vcenter_user=None, vcenter_password=None, api_version='1.0'):
         self.api = api_version
-        self.port = port + "/" + self.api
-        self.url = "https://" + url
+        self.port = port
+        self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api
         self.vcenter_user = vcenter_user
         self.vcenter_password = vcenter_password
 
     def login(self):
-        api_endpoint = '/api/rest/user/login'
-        url_action = self.url + ":" + self.port + api_endpoint
+        api_endpoint = '/user/login'
+        url_action = self.url + api_endpoint
+
         headers = {'Accept': 'application/json'}
         payload = {
             'vcenterPassword': self.vcenter_password,
@@ -27,21 +28,31 @@ class UserAuthentication:
 
         r = requests.post(url=url_action, headers=headers, json=payload)
 
-        self.token = r.json()['vmwareApiSessionId']
+        token = dict()
 
-        return self.token
+        if r.json()['responseMessage']:
+            token['responseMessage'] = r.json()['responseMessage']
+            token['vmwareApiSessionId'] = r.json()['vmwareApiSessionId']
 
-    def logout(self):
-        api_endpoint = '/api/rest/user/logout'
-        url_action = self.url + ":" + self.port + api_endpoint
+        token['status_code'] = r.status_code
+
+        return token
+
+    def logout(self, token=None):
+        api_endpoint = '/user/logout'
+        url_action = self.url + api_endpoint
         headers = {
             'Accept': 'application/json',
-            'vmware-api-session-id': self.token
+            'vmware-api-session-id': token
         }
 
         r = requests.post(url=url_action, headers=headers, verify=False)
 
-        out = r.json()
+        out = dict()
+
+        if r.json()['responseMessage']:
+            out['responseMessage'] = r.json()['responseMessage']
+
         out['status_code'] = r.status_code
 
         return out
