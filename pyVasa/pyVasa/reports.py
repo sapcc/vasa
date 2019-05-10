@@ -15,7 +15,7 @@ class Reports:
 		if token is not None:
 			self.token = token
 
-	def datastores(self):
+	def get_datastores_report(self):
 		api_endpoint = '/api/rest/admin/report/datastores'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
@@ -30,7 +30,7 @@ class Reports:
 
 		return datastore_details
 
-	def virtual_machines(self):
+	def get_virtual_machines_report(self):
 		api_endpoint = '/api/rest/admin/report/virtual-machines'
 		url_action = self.url + ":" + self.port + api_endpoint
 		headers = {
