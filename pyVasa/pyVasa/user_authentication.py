@@ -6,7 +6,7 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class VasaConnection:
+class UserAuthentication:
     token = None
 
     def __init__(self, url=None, port=None, vcenter_user=None, vcenter_password=None, api_version='1.0'):
@@ -16,7 +16,7 @@ class VasaConnection:
         self.vcenter_user = vcenter_user
         self.vcenter_password = vcenter_password
 
-    def new_token(self):
+    def login(self):
         api_endpoint = '/api/rest/user/login'
         url_action = self.url + ":" + self.port + api_endpoint
         headers = {'Accept': 'application/json'}
