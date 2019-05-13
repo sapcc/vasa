@@ -9,14 +9,14 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class ApplianceManagement:
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/appliance-management/"
 		self.vp_user = vp_user
 		self.vp_password = vp_password
 
 	def get_ssh_status(self):
-		api_endpoint = '/api/rest/appliance/management/ssh'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "ssh"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -31,8 +31,8 @@ class ApplianceManagement:
 		return ssh_status
 
 	def set_ssh_enable(self):
-		api_endpoint = '/api/rest/appliance/management/ssh/enable'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "ssh/enable"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -47,8 +47,8 @@ class ApplianceManagement:
 		return ssh_enable
 
 	def set_ssh_disable(self):
-		api_endpoint = '/api/rest/appliance/management/ssh/disable'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "ssh/disable"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -63,8 +63,8 @@ class ApplianceManagement:
 		return ssh_disable
 
 	def get_appliance_details(self):
-		api_endpoint = '/api/rest/appliance/management/appliance-details'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "appliance-details"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -79,8 +79,8 @@ class ApplianceManagement:
 		return details
 
 	def get_network_settings(self):
-		api_endpoint = '/api/rest/appliance/management/network-settings'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "network-settings"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -95,8 +95,8 @@ class ApplianceManagement:
 		return nw_settings
 
 	def set_network_settings(self, dns_server=None, gw=None, ip=None, ip_family=None, mode=None, nmask=None):
-		api_endpoint = '/api/rest/appliance/management/network-settings'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "network-settings"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -122,8 +122,8 @@ class ApplianceManagement:
 		return set_nw
 
 	def get_ntp_server(self):
-		api_endpoint = '/api/rest/appliance/management/ntp-server'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "ntp-server"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -138,8 +138,8 @@ class ApplianceManagement:
 		return ntp_server
 
 	def set_ntp_server(self, skip_refresh=None, ntp_server=None):
-		api_endpoint = '/api/rest/appliance/management/ntp-server'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "ntp-server"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -156,8 +156,8 @@ class ApplianceManagement:
 		return ntp
 
 	def create_support_bundle(self):
-		api_endpoint = '/api/rest/appliance/management/support-bundle'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "support-bundle"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -172,8 +172,8 @@ class ApplianceManagement:
 		return bundle
 
 	def get_time_zones(self):
-		api_endpoint = '/api/rest/appliance/management/available-time-zones'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "available-time-zones"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -188,8 +188,8 @@ class ApplianceManagement:
 		return timezones
 
 	def get_time_zone(self):
-		api_endpoint = '/api/rest/appliance/management/time-zone'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "time-zone"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -204,8 +204,8 @@ class ApplianceManagement:
 		return timezone_show
 
 	def set_time_zone(self, timezone=None):
-		api_endpoint = '/api/rest/appliance/management/time-zone'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "time-zone"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -221,8 +221,8 @@ class ApplianceManagement:
 		return timezone
 
 	def get_logging(self, service_type=None):
-		api_endpoint = '/api/rest/appliance/management/logging'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "logging"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -238,8 +238,8 @@ class ApplianceManagement:
 		return logging
 
 	def set_logging(self, service_type=None, level=None):
-		api_endpoint = '/api/rest/appliance/management/logging'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "logging"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -256,8 +256,8 @@ class ApplianceManagement:
 		return log_level
 
 	def set_password(self, user=None, old_pw=None, new_pw=None):
-		api_endpoint = '/api/rest/appliance/management/password/reset'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "password/reset"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -275,8 +275,8 @@ class ApplianceManagement:
 		return pw_reset
 
 	def ping_host(self, hostname=None):
-		api_endpoint = '/api/rest/appliance/management/network-settings/ping-host'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "network-settings/ping-host"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -292,8 +292,8 @@ class ApplianceManagement:
 		return ping
 
 	def get_static_route(self):
-		api_endpoint = '/api/rest/appliance/management/network-settings/static-route'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "network-settings/static-route"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -308,8 +308,8 @@ class ApplianceManagement:
 		return route_show
 
 	def set_static_route(self, host=None, gateway=None):
-		api_endpoint = '/api/rest/appliance/management/network-settings/static-route'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "network-settings/static-route"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -326,8 +326,8 @@ class ApplianceManagement:
 		return route_add
 
 	def delete_static_route(self, host=None, gateway=None):
-		api_endpoint = '/api/rest/appliance/management/network-settings/static-route'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "network-settings/static-route"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -344,8 +344,8 @@ class ApplianceManagement:
 		return route_delete
 
 	def get_certificate(self, service_type=None):
-		api_endpoint = '/api/rest/appliance/management/certificate'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "certificate"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -362,8 +362,8 @@ class ApplianceManagement:
 		return cert_show
 
 	def set_certificate(self, service_type=None, certificate=None):
-		api_endpoint = '/api/rest/appliance/management/certificate'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "certificate"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -385,8 +385,8 @@ class ApplianceManagement:
 		return cert_import
 
 	def generate_csr(self, service_type=None):
-		api_endpoint = '/api/rest/appliance/management/certificate/generate-csr'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "certificate/generate-csr"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -402,8 +402,8 @@ class ApplianceManagement:
 		return generate_cert
 
 	def reset_certificate(self, service_type=None):
-		api_endpoint = '/api/rest/appliance/management/certificate/reset'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "certificate/reset"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -419,8 +419,8 @@ class ApplianceManagement:
 		return reset_cert
 
 	def update_sys_log(self, uuid=None, host=None, level=None, pattern=None, log_port=None, token=None):
-		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "log-config/sys-log"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token,
@@ -442,8 +442,8 @@ class ApplianceManagement:
 		return syslog_modify
 
 	def set_sys_log(self, host=None, level=None, pattern=None, log_port=None, token=None):
-		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "log-config/sys-log"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token
@@ -464,8 +464,8 @@ class ApplianceManagement:
 		return syslog_set
 
 	def get_sys_log(self, uuid=None, token=None):
-		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "log-config/sys-log"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token,
@@ -480,8 +480,8 @@ class ApplianceManagement:
 		return syslog_details
 
 	def delete_sys_log(self, uuid=None, token=None):
-		api_endpoint = '/api/rest/admin/appliance-management/log-config/sys-log'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "log-config/sys-log"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token,

@@ -9,15 +9,15 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class Datastore:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/datastore"
 
 		if token is not None:
 			self.token = token
 
 	def mount_datastore_on_host(self, container_id=None, ds_name=None, ds_type=None, host_id=None):
-		api_endpoint = '/api/rest/admin/datastore/mount-on-host'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/mount-on-host"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -38,8 +38,8 @@ class Datastore:
 		return mount
 
 	def mount_datastore_on_additional_hosts(self, ds_name=None, ds_type=None, host_ids=None):
-		api_endpoint = '/api/rest/admin/datastore/mount-on-additional-hosts'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/mount-on-additional-hosts"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -61,8 +61,8 @@ class Datastore:
 		return mounts
 
 	def unmount_datastore(self, ds_name=None, ds_type=None, host_ids=None):
-		api_endpoint = '/api/rest/admin/datastore/unmount'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/unmount"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -85,8 +85,7 @@ class Datastore:
 
 	def create_datastore(self, cluster_ip=None, ds_type=None, scp=None, description=None, flexvol=None,
 	                     ds_name=None, protocol=None, target=None, vserver=None):
-		api_endpoint = '/api/rest/admin/datastore'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -114,8 +113,7 @@ class Datastore:
 		return ds_create
 
 	def delete_datastore(self, ds_type=None, ds_moref=None):
-		api_endpoint = '/api/rest/admin/datastore'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -131,8 +129,7 @@ class Datastore:
 		return ds_delete
 
 	def get_datastore(self, ds_type=None, ds_name=None):
-		api_endpoint = '/api/rest/admin/datastore'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -148,8 +145,8 @@ class Datastore:
 		return ds_details
 
 	def get_datastore_clusters(self, scp=None, protocol=None):
-		api_endpoint = '/api/rest/admin/datastore/clusters'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/clusters"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -165,8 +162,8 @@ class Datastore:
 		return ds_cfilter
 
 	def get_aggregates_for_scp(self, scp=None, cluster=None, vserver=None):
-		api_endpoint = '/api/rest/admin/datastore/provisioning/aggregates/forscp'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/provisioning/aggregates/forscp"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -183,8 +180,8 @@ class Datastore:
 		return ds_afilter
 
 	def add_storage(self, ds_type=None, ds_name=None, cluster_ip=None, scp=None, volume=None, vserver=None):
-		api_endpoint = '/api/rest/admin/datastore/storage'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/storage"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -211,8 +208,8 @@ class Datastore:
 		return s_add
 
 	def delete_storage(self, ds_type=None, ds_name=None, volume=None):
-		api_endpoint = '/api/rest/admin/datastore/storage'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/storage"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
