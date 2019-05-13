@@ -6,18 +6,18 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class Commons:
+class Task:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/task/"
 
 		if token is not None:
 			self.token = token
 
-	def task_status(self, task_id=None):
-		api_endpoint = '/api/rest/admin/task/status'
-		url_action = self.url + ":" + self.port + api_endpoint
+	def get_task_status(self, task_id=None):
+		api_endpoint = "status"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
