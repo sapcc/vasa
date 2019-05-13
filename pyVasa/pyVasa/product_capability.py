@@ -10,14 +10,13 @@ class ProductCapability:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/product-capabilities"
 
 		if token is not None:
 			self.token = token
 
 	def get_product_capabilities(self):
-		api_endpoint = '/api/rest/admin/product-capabilities'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -31,8 +30,8 @@ class ProductCapability:
 		return details
 
 	def get_server_status(self):
-		api_endpoint = '/api/rest/admin/product-capabilities/server-status'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/server-status"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -46,8 +45,8 @@ class ProductCapability:
 		return status
 
 	def set_vp_status(self, state=None, vp_password=None):
-		api_endpoint = '/api/rest/admin/product-capabilities/vp'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/vp"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -66,8 +65,8 @@ class ProductCapability:
 		return vp
 
 	def set_sra_status(self, state=None, vp_password=None):
-		api_endpoint = '/api/rest/admin/product-capabilities/sra'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/sra"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -86,8 +85,8 @@ class ProductCapability:
 		return sra
 
 	def restart_service(self, service=None):
-		api_endpoint = '/api/rest/admin/product-capabilities/restart-service'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/restart-service"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,

@@ -9,15 +9,24 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class VspherePrivilege:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/vcenter/"
 
 		if token is not None:
 			self.token = token
 
-	def get_vcenter_privileges(self, privilegeId=None):
-		api_endpoint = '/api/rest/vcenter/privileges?privilegeId=' + privilegeId
-		url_action = self.url + ":" + self.port + api_endpoint
+	def get_vcenter_privileges(self, privilegeId=None, moref=None):
+		if privilegeId and moref:
+			raise BaseException("Please user moref OR privilegeId not both!")
+
+		if privilegeId:
+			api_endpoint = "privileges/?privilegeId=" + privilegeId + "privileges/?moref=" + moref
+
+		if moref:
+			# ToDo moref doesn't work. Address issue to NetApp.
+			api_endpoint = "privileges/?moref=" + moref
+
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token

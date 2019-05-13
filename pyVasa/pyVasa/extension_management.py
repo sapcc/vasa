@@ -9,8 +9,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class ExtentionManagement:
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/vsc"
 		self.vasa_host = url
 
 		if vp_user is not None:
@@ -20,8 +20,7 @@ class ExtentionManagement:
 			self.vp_password = vp_password
 
 	def get_vsc_status(self):
-		api_endpoint = '/api/rest/admin/vsc'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'password': self.vp_password,
@@ -36,9 +35,7 @@ class ExtentionManagement:
 		return vsc_details
 
 	def register_vsc(self, vc_hostname=None, vc_user=None, vc_password=None, vc_port=None):
-		'''TODO: api bug, in clarification with netapp development'''
-		api_endpoint = '/api/rest/admin/vsc'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {'Accept': 'application/json'}
 
 		payload = {
@@ -62,8 +59,7 @@ class ExtentionManagement:
 		return register
 
 	def unregister_vsc(self, vc_user=None, vc_password=None):
-		api_endpoint = '/api/rest/admin/vsc'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vcenter-password': vc_password,

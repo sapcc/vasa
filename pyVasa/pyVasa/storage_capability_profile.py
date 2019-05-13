@@ -9,8 +9,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class StorageCapabilityProfile:
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/storage-capabilities"
 		self.vp_user = vp_user
 		self.vp_password = vp_password
 
@@ -18,8 +18,7 @@ class StorageCapabilityProfile:
 			self.token = token
 
 	def get_storage_capability_profiles(self):
-		api_endpoint = '/api/rest/admin/storage-capabilities'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -39,8 +38,7 @@ class StorageCapabilityProfile:
 	                                      platform=None, space_efficiency=None,
 	                                      tiering_policy=None):
 
-		api_endpoint = '/api/rest/admin/storage-capabilities'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -75,8 +73,7 @@ class StorageCapabilityProfile:
 	                                      platform=None, space_efficiency=None,
 	                                      tiering_policy=None, profile_id=None):
 
-		api_endpoint = '/api/rest/admin/storage-capabilities'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -108,8 +105,7 @@ class StorageCapabilityProfile:
 		return update_profile
 
 	def delete_storage_capability_profile(self, profile_name=None):
-		api_endpoint = '/api/rest/admin/storage-capabilities'
-		url_action = self.url + ":" + self.port + api_endpoint
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -124,8 +120,8 @@ class StorageCapabilityProfile:
 		return delete_profiles
 
 	def delete_storage_capabilities_by_id(self, profile_id=None):
-		api_endpoint = '/api/rest/admin/storage-capabilities/'
-		url_action = self.url + ":" + self.port + api_endpoint + profile_id
+		api_endpoint = "/" + profile_id
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -139,8 +135,8 @@ class StorageCapabilityProfile:
 		return delete_profile_id
 
 	def get_storage_capabilities_by_id(self, profile_id=None):
-		api_endpoint = '/api/rest/admin/storage-capabilities/'
-		url_action = self.url + ":" + self.port + api_endpoint + profile_id
+		api_endpoint = "/" + profile_id
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -161,8 +157,8 @@ class StorageCapabilityProfile:
 	                                     tiering_policy=None, profile_id=None,
 	                                     new_profile_name=None):
 
-		api_endpoint = '/api/rest/admin/storage-capabilities/clone'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/clone"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -195,8 +191,8 @@ class StorageCapabilityProfile:
 		return clone_profile
 
 	def get_storage_capabilities_profile_names(self):
-		api_endpoint = '/api/rest/admin/storage-capabilities/profile-names'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/profile-names"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token

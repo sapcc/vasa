@@ -9,15 +9,15 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class Reports:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.port = port
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/report/"
 
 		if token is not None:
 			self.token = token
 
 	def get_datastores_report(self):
-		api_endpoint = '/api/rest/admin/report/datastores'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "datastores"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -31,8 +31,8 @@ class Reports:
 		return datastore_details
 
 	def get_virtual_machines_report(self):
-		api_endpoint = '/api/rest/admin/report/virtual-machines'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "virtual-machines"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
