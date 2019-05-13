@@ -10,14 +10,13 @@ class StorageSystems:
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port + "/" + self.api
-		self.url = "https://" + url
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/storage-systems"
 
 		if token is not None:
 			self.token = token
 
-	def list_storage_systems(self):
-		api_endpoint = '/api/rest/admin/storage-systems'
-		url_action = self.url + ":" + self.port + api_endpoint
+	def get_storage_systems(self):
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -25,14 +24,13 @@ class StorageSystems:
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		list_storage_sys = r.json()
-		list_storage_sys['status_code'] = r.status_code
+		get_storage_sys = r.json()
+		get_storage_sys['status_code'] = r.status_code
 
-		return list_storage_sys
+		return get_storage_sys
 
-	def add_storage_systems(self, ip_address=None, storage_user=None, storage_pwd=None, storage_port=None):
-		api_endpoint = '/api/rest/admin/storage-systems'
-		url_action = self.url + ":" + self.port + api_endpoint
+	def add_storage_system(self, ip_address=None, storage_user=None, storage_pwd=None, storage_port=None):
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -52,9 +50,8 @@ class StorageSystems:
 
 		return add_storage
 
-	def remove_storage_systems(self, controller_id=None):
-		api_endpoint = '/api/rest/admin/storage-systems'
-		url_action = self.url + ":" + self.port + api_endpoint
+	def delete_storage_system(self, controller_id=None):
+		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -63,14 +60,30 @@ class StorageSystems:
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		rm_storage = r.json()
-		rm_storage['status_code'] = r.status_code
+		del_storage = r.json()
+		del_storage['status_code'] = r.status_code
 
-		return rm_storage
+		return del_storage
 
-	def list_aggregates(self, cluster_id=None):
-		api_endpoint = '/api/rest/admin/'
-		url_action = self.url + ":" + self.port + api_endpoint + cluster_id + '/aggregates'
+	def get_aggregate(self, cluster_id=None, aggregate=None):
+		api_endpoint = "/" + cluster_id + "/aggregate"
+		url_action = self.url + api_endpoint
+		headers = {
+			'Accept': 'application/json',
+			'vmware-api-session-id': self.token,
+			'aggregateName': aggregate
+		}
+
+		r = requests.get(url=url_action, headers=headers, verify=False)
+
+		aggregate = r.json()
+		aggregate['status_code'] = r.status_code
+
+		return aggregate
+
+	def get_aggregates(self, cluster_id=None):
+		api_endpoint = "/" + cluster_id + "/aggregates"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -78,14 +91,14 @@ class StorageSystems:
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		list_aggregates = r.json()
-		list_aggregates['status_code'] = r.status_code
+		aggregates = r.json()
+		aggregates['status_code'] = r.status_code
 
-		return list_aggregates
+		return aggregates
 
-	def list_storage_systems_by_controller(self, controller_id=None):
-		api_endpoint = '/api/rest/admin/storage-systems/'
-		url_action = self.url + ":" + self.port + api_endpoint + controller_id
+	def get_cluster(self, cluster_id=None):
+		api_endpoint = "/" + cluster_id
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -93,46 +106,14 @@ class StorageSystems:
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		list_by_controller = r.json()
-		list_by_controller['status_code'] = r.status_code
+		cluster = r.json()
+		cluster['status_code'] = r.status_code
 
-		return list_by_controller
+		return cluster
 
-	def list_flexvols(self, vserver=None):
-		#ToDo - has remove since the last build
-		api_endpoint = '/api/rest/admin/storage-systems/'
-		url_action = self.url + ":" + self.port + api_endpoint + vserver + '/flexVols'
-		headers = {
-			'Accept': 'application/json',
-			'vmware-api-session-id': self.token
-		}
-
-		r = requests.get(url=url_action, headers=headers, verify=False)
-
-		list_flexvols = r.json()
-		list_flexvols['status_code'] = r.status_code
-
-		return list_flexvols
-
-	def show_flexvol_details(self, vserver=None, flexvol=None):
-		# ToDo - has remove since the last build
-		api_endpoint = '/api/rest/admin/storage-systems/'
-		url_action = self.url + ":" + self.port + api_endpoint + vserver + '/flexVols/' + flexvol
-		headers = {
-			'Accept': 'application/json',
-			'vmware-api-session-id': self.token
-		}
-
-		r = requests.get(url=url_action, headers=headers, verify=False)
-
-		flexvol_details = r.json()
-		flexvol_details['status_code'] = r.status_code
-
-		return flexvol_details
-
-	def list_flexvol_by_scp(self, vserver=None, scp=None, protocol=None, cluster=None):
-		api_endpoint = '/api/rest/admin/datastore/provisioning/flex-vols-scp'
-		url_action = self.url + ":" + self.port + api_endpoint
+	def get_flexvols(self, vserver=None, scp=None, protocol=None, cluster=None):
+		api_endpoint = "/provisioning/flex-vols"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token,
@@ -144,14 +125,14 @@ class StorageSystems:
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		flexvol_list = r.json()
-		flexvol_list['status_code'] = r.status_code
+		flexvols = r.json()
+		flexvols['status_code'] = r.status_code
 
-		return flexvol_list
+		return flexvols
 
-	def create_flexvol_by_scp(self, vserver=None, scp=None, aggr=None, cluster_ip=None, volume=None, size=None):
-		api_endpoint = '/api/rest/admin/datastore/provisioning/flex-vols-scp'
-		url_action = self.url + ":" + self.port + api_endpoint
+	def create_flexvol(self, vserver=None, scp=None, aggr=None, cluster_ip=None, volume=None, size=None):
+		api_endpoint = "/provisioning/flex-vols"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
@@ -176,8 +157,8 @@ class StorageSystems:
 		return flexvol_create
 
 	def cluster_rediscover(self):
-		api_endpoint = '/api/rest/admin/cluster/rediscover'
-		url_action = self.url + ":" + self.port + api_endpoint
+		api_endpoint = "/rediscover"
+		url_action = self.url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
