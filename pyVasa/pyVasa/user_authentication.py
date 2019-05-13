@@ -17,7 +17,7 @@ class UserAuthentication:
         self.vcenter_password = vcenter_password
 
     def login(self):
-        api_endpoint = 'login'
+        api_endpoint = "login"
         url_action = self.url + api_endpoint
 
         headers = {'Accept': 'application/json'}
@@ -39,7 +39,7 @@ class UserAuthentication:
         return token
 
     def logout(self, token=None):
-        api_endpoint = 'logout'
+        api_endpoint = "logout"
         url_action = self.url + api_endpoint
         headers = {
             'Accept': 'application/json',
