@@ -1,3 +1,10 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Author Hannes Ebelt <hannes.ebelt@sap.com>
+#
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#
+
 import requests
 import os
 from urllib3.exceptions import InsecureRequestWarning
