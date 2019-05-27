@@ -13,11 +13,11 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class ApplianceManagement:
+class ApplianceManagement(object):
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/appliance-management/"
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/appliance/management/"
 		self.vp_user = vp_user
 		self.vp_password = vp_password
 
@@ -138,6 +138,8 @@ class ApplianceManagement:
 		}
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
+
+
 
 		ntp_server = r.json()
 		ntp_server['status_code'] = r.status_code

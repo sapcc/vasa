@@ -13,7 +13,7 @@ requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class StorageCapabilityProfile:
+class StorageCapabilityProfile(object):
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, token=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port
