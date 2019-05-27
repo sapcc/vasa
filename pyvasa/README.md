@@ -13,14 +13,11 @@
 ### Content
 
 * Appliance Management
-* Commons
-* Dashboard
 * Datastore
-* Log Management
-* Manage Extentions
+* Extention Management
 * Product Capability
 * Reports
 * Storage Capability Profile
 * Storage Systems
-* Vasa Connect
-* Vsphere Privilege Validations
+* Task
+* User Authentication
