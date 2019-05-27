@@ -18,41 +18,41 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_route_show
+module: vasa_appliance_management_get_static_route
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show static route details of netapp unified pyvasa appliance
+- show static route details of netapp unified vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 '''
 
 EXAMPLES = '''
- - name: "show static route of pyvasa appliance {{ inventory_hostname }}"
+ - name: "show static route of vasa appliance {{ inventory_hostname }}"
    local_action:
-     module: vasa_appliance_management_route_show
+     module: vasa_appliance_management_get_static_route
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -93,7 +93,7 @@ def main():
     result = dict(changed=False)
 
     vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-    res = vp.show_route()
+    res = vp.get_static_route()
 
     try:
         if res['status_code'] == 200:

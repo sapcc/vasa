@@ -9,7 +9,6 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 from pyvasa.appliance_management import ApplianceManagement
 
-
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -19,33 +18,33 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_certificate_details
+module: vasa_appliance_management_get_certificate
 
 short_description: managing netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show details of pyvasa appliance certificate
+- show details of vasa appliance certificate
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -56,9 +55,9 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "show details of pyvasa appliance certificate"
+ - name: "show details of vasa appliance certificate"
    local_action:
-     module: vasa_appliance_management_certificate_details
+     module: vasa_appliance_management_get_certificate
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -104,7 +103,7 @@ def main():
 		vp_password=password
 	)
 
-	res = vp.show_certificate(
+	res = vp.get_certificate(
 		service_type=service
 	)
 

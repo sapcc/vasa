@@ -324,7 +324,7 @@ class ApplianceManagement(object):
 			'Accept': 'application/json',
 			'password': self.vp_password,
 			'username': self.vp_user,
-			'host': host,
+			'host-or-network': host,
 			'gateway': gateway
 		}
 
@@ -342,7 +342,7 @@ class ApplianceManagement(object):
 			'Accept': 'application/json',
 			'password': self.vp_password,
 			'username': self.vp_user,
-			'host': host,
+			'host-or-network': host,
 			'gateway': gateway
 		}
 
@@ -360,7 +360,6 @@ class ApplianceManagement(object):
 			'Accept': 'application/json',
 			'password': self.vp_password,
 			'username': self.vp_user,
-			#'Accept': accept,
 			'service-type': service_type
 		}
 
