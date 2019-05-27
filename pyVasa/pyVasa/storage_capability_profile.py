@@ -7,6 +7,7 @@
 
 import requests
 import os
+from builtins import object
 from urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
