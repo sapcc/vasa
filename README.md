@@ -7,7 +7,7 @@ This repository contains classes and modules to manage the NetApp VASA Appliance
   * NetApp VASA Provider Version 7.2.1
   * Ansible Version 2.6.2
   * Python Version l2.7.15rc1
-  * pyVasa package
+  * pyvasa package
 
 ## API Documentation
 
@@ -23,9 +23,9 @@ REST API Documentation: `https://<url>:8143/api/rest/swagger-ui.html#/`
             └── netapp
 ```
 
-### pyVasa package
+### pyvasa package
 
-Use pip install to install pyVasa package.
+Use pip install to install pyvasa package.
 
 ### Modules
 

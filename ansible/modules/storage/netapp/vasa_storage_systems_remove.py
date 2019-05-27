@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyVasa.storage_systems import StorageSystems
-from pyVasa.vasa_connect import VasaConnection
+from pyvasa.storage_systems import StorageSystems
+from pyvasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_systems_remove
 
-short_description: storage systems of netapp pyVasa unified appliance
+short_description: storage systems of netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- remove storage system from netapp unified pyVasa appliance
+- remove storage system from netapp unified pyvasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -58,7 +58,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "remove storage system from netapp unified pyVasa appliance"
+ - name: "remove storage system from netapp unified pyvasa appliance"
    local_action:
      module: vasa_storage_systems_remove
      host: "{{ inventory_hostname }}"

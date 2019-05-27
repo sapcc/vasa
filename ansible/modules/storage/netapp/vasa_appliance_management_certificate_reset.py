@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from pyVasa.appliance_management import ApplianceManagement
+from pyvasa.appliance_management import ApplianceManagement
 
 __metaclass__ = type
 
@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_certificate_reset
 
-short_description: managing netapp pyVasa unified appliance
+short_description: managing netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- reset of pyVasa appliance certificate
+- reset of pyvasa appliance certificate
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyVasa appliance username for login.
+    - pyvasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyVasa appliance password for login.
+    - pyvasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -55,7 +55,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "reset of pyVasa appliance certificate"
+ - name: "reset of pyvasa appliance certificate"
    local_action:
      module: vasa_appliance_management_certificate_reset
      host: "{{ inventory_hostname }}"

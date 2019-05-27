@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyVasa.product_capability import ProductCapability
-from pyVasa.vasa_connect import VasaConnection
+from pyvasa.product_capability import ProductCapability
+from pyvasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_product_capability_status
 
-short_description: product capabilities of netapp pyVasa unified appliance
+short_description: product capabilities of netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show running services of netapp pyVasa appliance
+- show running services of netapp pyvasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -53,7 +53,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "show running services of netapp pyVasa appliance {{ inventory_hostname }}"
+ - name: "show running services of netapp pyvasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_product_capability_status
      host: "{{ inventory_hostname }}"

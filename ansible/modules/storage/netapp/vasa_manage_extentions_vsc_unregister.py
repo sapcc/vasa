@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from pyVasa.manage_extentions import ManageExtentions
+from pyvasa.manage_extentions import ManageExtentions
 
 __metaclass__ = type
 
@@ -20,21 +20,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_manage_extentions_vsc_unregister
 
-short_description: manage extentions of netapp pyVasa unified appliance
+short_description: manage extentions of netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- unregister netapp VSC pyVasa appliance to vcenter
+- unregister netapp VSC pyvasa appliance to vcenter
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -50,7 +50,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "unregister VSC pyVasa appliance {{ inventory_hostname }} to vcenter"
+ - name: "unregister VSC pyvasa appliance {{ inventory_hostname }} to vcenter"
    local_action:
      module: vasa_manage_extentions_unregister
      host: "{{ inventory_hostname }}"

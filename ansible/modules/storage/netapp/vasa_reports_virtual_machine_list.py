@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyVasa.reports import Reports
-from pyVasa.vasa_connect import VasaConnection
+from pyvasa.reports import Reports
+from pyvasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
@@ -23,22 +23,22 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_reports_virtual_machine_list
 
-short_description: reports of netapp pyVasa unified appliance
+short_description: reports of netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- generate vsc virtual machines report of netapp pyVasa appliance
+- generate vsc virtual machines report of netapp pyvasa appliance
 
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -54,7 +54,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "generate vsc virtual machines report of pyVasa appliance {{ inventory_hostname }}"
+ - name: "generate vsc virtual machines report of pyvasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_reports_virtual_machine_list
      host: "{{ inventory_hostname }}"
