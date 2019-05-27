@@ -12,65 +12,63 @@ from pyvasa.appliance_management import ApplianceManagement
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-	'metadata_version': '1.0',
-	'supported_by': 'community',
-	'status': ['preview']
+    'metadata_version': '1.0',
+    'supported_by': 'community',
+    'status': ['preview']
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_route_add
+module: vasa_appliance_management_set_certificate
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- add static route to netapp unified pyvasa appliance
+- import certificate to vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
-  hostname:
+  service:
     description:
-    - hostname for static route.
+    - select service type (accepted values - VP, VSC)
     required: true
 
-  gateway:
+  certificate:
     description:
-    - gateway for static route.
-      NOTE - To add a netmask, place the number of bits to mask at the
-      end of network address "192.168.45.0/16,192.168.45.0/32"
+    - certificate chain
     required: true
 '''
 
 EXAMPLES = '''
- - name: "add static route to pyvasa appliance {{ inventory_hostname }}"
+ - name: "import certificate to vasa appliance"
    local_action:
-     module: vasa_appliance_management_route_add
+     module: vasa_appliance_management_set_certificate
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
      port: "{{ appliance_port }}"
-     hostname: "{{ hostname }}"
-     gateway: "{{ new_gateway }}"
+     service: "{{ service_type }}"
+     certificate: "{{ certificate }}"
 '''
 
 RETURN = '''
@@ -88,8 +86,8 @@ def main():
 			username=dict(required=True, type='str'),
 			password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			hostname=dict(required=True, type='str'),
-			gateway=dict(required=True, type='str')
+			service=dict(required=True, type='str'),
+			certificate=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -98,13 +96,22 @@ def main():
 	port = module.params['port']
 	username = module.params['username']
 	password = module.params['password']
-	hostname = module.params['hostname']
-	gateway = module.params['gateway']
+	service = module.params['service']
+	certificate = module.params['certificate']
 
 	result = dict(changed=False)
 
-	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.add_route(host=hostname, gateway=gateway)
+	vp = ApplianceManagement(
+		port=port,
+		url=host,
+		vp_user=username,
+		vp_password=password
+	)
+
+	res = vp.set_certificate(
+		service_type=service,
+		certificate=certificate
+	)
 
 	try:
 		if res['status_code'] == 200:
