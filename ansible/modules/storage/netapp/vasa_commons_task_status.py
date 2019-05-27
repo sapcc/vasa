@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyVasa.commons import Commons
-from pyVasa.vasa_connect import VasaConnection
+from pyvasa.commons import Commons
+from pyvasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_commons_task_status
 
-short_description: get task status of netapp pyVasa unified appliance
+short_description: get task status of netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- get task status of netapp pyVasa appliance
+- get task status of netapp pyvasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 

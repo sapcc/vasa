@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pyVasa',
+    name='pyvasa',
     version='0.1dev',
     description='Python package for NetApp VASA Appliance',
     license=open('LICENSE').read(),
-    url='https://github.com/sapcc/vasa/pyVasa',
+    url='https://github.com/sapcc/vasa/pyvasa',
     long_description=open('README.md').read(),
     packages=find_packages(),
     install_requires=[

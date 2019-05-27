@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyVasa.storage_capability_profile import StorageCapability
-from pyVasa.vasa_connect import VasaConnection
+from pyvasa.storage_capability_profile import StorageCapability
+from pyvasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_capability_profile_update
 
-short_description: storage capabilities of netapp pyVasa unified appliance
+short_description: storage capabilities of netapp pyvasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- update a storage capabilitiy profile for the netapp unified pyVasa appliance
+- update a storage capabilitiy profile for the netapp unified pyvasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -103,7 +103,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "update a storage capabilitiy profile of pyVasa appliance {{ inventory_hostname }}"
+ - name: "update a storage capabilitiy profile of pyvasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_capability_profile_update
      host: "{{ inventory_hostname }}"

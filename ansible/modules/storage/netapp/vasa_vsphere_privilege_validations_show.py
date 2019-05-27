@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyVasa.vsphere_privilege_validations import VspherePrivilegdeValidations
-from pyVasa.vasa_connect import VasaConnection
+from pyvasa.vsphere_privilege_validations import VspherePrivilegdeValidations
+from pyvasa.vasa_connect import VasaConnection
 
 __metaclass__ = type
 
@@ -32,12 +32,12 @@ description:
 options:
   host:
     description:
-    - The ip or name of the pyVasa unified appliance to manage.
+    - The ip or name of the pyvasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyVasa unified appliance to manage.
+    - The port of the pyvasa unified appliance to manage.
     required: false
     default: '8143'
 

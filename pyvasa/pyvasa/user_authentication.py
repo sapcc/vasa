@@ -7,13 +7,14 @@
 
 import requests
 import os
+from builtins import object
 from urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class UserAuthentication:
+class UserAuthentication(object):
     token = None
 
     def __init__(self, url=None, port=None, vcenter_user=None, vcenter_password=None, api_version='1.0'):

@@ -7,13 +7,14 @@
 
 import requests
 import os
+from builtins import object
 from urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 os.environ["CURL_CA_BUNDLE"] = ""
 
 
-class ExtentionManagement:
+class ExtentionManagement(object):
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port
