@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_capability_profile_list_names
 
-short_description: storage capabilities of netapp pyvasa unified appliance
+short_description: storage capabilities of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list details storage capabilitiy profiles names of netapp pyvasa appliance
+- list details storage capabilitiy profiles names of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -53,7 +53,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "list storage capabilitiy profile names of pyvasa appliance {{ inventory_hostname }}"
+ - name: "list storage capabilitiy profile names of vasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_capability_profile_list_names
      host: "{{ inventory_hostname }}"

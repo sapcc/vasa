@@ -20,37 +20,37 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_support_bundle
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- create a support bundle of netapp pyvasa appliance
+- create a support bundle of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 '''
 
 EXAMPLES = '''
- - name: "create a support bundle of pyvasa appliance {{ inventory_hostname }}"
+ - name: "create a support bundle of vasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_support_bundle
      host: "{{ inventory_hostname }}"

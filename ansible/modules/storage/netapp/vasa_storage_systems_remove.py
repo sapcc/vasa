@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_systems_remove
 
-short_description: storage systems of netapp pyvasa unified appliance
+short_description: storage systems of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- remove storage system from netapp unified pyvasa appliance
+- remove storage system from netapp unified vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -58,7 +58,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "remove storage system from netapp unified pyvasa appliance"
+ - name: "remove storage system from netapp unified vasa appliance"
    local_action:
      module: vasa_storage_systems_remove
      host: "{{ inventory_hostname }}"

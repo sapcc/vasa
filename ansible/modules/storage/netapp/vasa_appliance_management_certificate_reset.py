@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_certificate_reset
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- reset of pyvasa appliance certificate
+- reset of vasa appliance certificate
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -55,7 +55,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "reset of pyvasa appliance certificate"
+ - name: "reset of vasa appliance certificate"
    local_action:
      module: vasa_appliance_management_certificate_reset
      host: "{{ inventory_hostname }}"

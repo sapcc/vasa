@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_ntp
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- set ntp server(s) of netapp pyvasa appliance
+- set ntp server(s) of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -61,7 +61,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "set ntp server(s) of pyvasa appliance {{ inventory_hostname }}"
+ - name: "set ntp server(s) of vasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_ntp_set
      host: "{{ inventory_hostname }}"

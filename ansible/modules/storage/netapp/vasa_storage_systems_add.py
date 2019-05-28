@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_storage_systems_add
 
-short_description: storage systems of netapp pyvasa unified appliance
+short_description: storage systems of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- add new storage system to netapp unified pyvasa appliance
+- add new storage system to netapp unified vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -53,7 +53,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "add new storage system to pyvasa appliance {{ inventory_hostname }}"
+ - name: "add new storage system to vasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_storage_systems_list
      host: "{{ inventory_hostname }}"

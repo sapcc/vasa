@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_log_management_modify
 
-short_description: log management of netapp pyvasa unified appliance
+short_description: log management of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- modify sys-log for netapp pyvasa appliance
+- modify sys-log for netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -78,7 +78,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "modify sys-log for netapp pyvasa appliance"
+ - name: "modify sys-log for netapp vasa appliance"
    local_action:
      module: vasa_log_management_modify
      host: "{{ inventory_hostname }}"
