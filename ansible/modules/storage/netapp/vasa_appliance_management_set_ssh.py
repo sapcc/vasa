@@ -18,7 +18,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_ssh
+module: vasa_appliance_management_set_ssh
 
 short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -57,9 +57,9 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "change ssh service for vasa appliance {{ inventory_hostname }}"
+ - name: "change ssh service for vasa appliance"
    local_action:
-     module: vasa_appliance_management_ssh
+     module: vasa_appliance_management_set_ssh
      host: "{{ inventory_hostn   ame }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -101,7 +101,7 @@ def main():
 
     try:
         if state == 'present':
-            res = vp.enable_ssh_management_appliance()
+            res = vp.set_ssh_enable()
 
             if res['status_code'] == 200:
                 result.update(result=res)
@@ -112,7 +112,7 @@ def main():
                 result.update(failed=True)
 
         elif state == 'absent':
-            res = vp.disable_ssh_management_appliance()
+            res = vp.set_ssh_disable()
 
             if res['status_code'] == 200:
                 result.update(result=res)

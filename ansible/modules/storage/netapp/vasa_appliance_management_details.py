@@ -50,7 +50,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "list details of vasa appliance {{ inventory_hostname }}"
+ - name: "list details of vasa appliance"
    local_action:
      module: vasa_appliance_management_details
      host: "{{ inventory_hostname }}"
@@ -93,7 +93,7 @@ def main():
     result = dict(changed=False)
 
     vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-    res = vp.list_appliance_details()
+    res = vp.get_appliance_details()
 
     try:
         if res['status_code'] == 200:

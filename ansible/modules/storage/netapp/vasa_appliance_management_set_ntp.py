@@ -18,13 +18,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_support_bundle
+module: vasa_appliance_management_set_ntp
 
 short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- create a support bundle of netapp vasa appliance
+- set ntp server(s) of netapp vasa appliance
 
 options:
   host:
@@ -47,23 +47,35 @@ options:
     - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
+
+  ntp_server:
+    description:
+    - name or ip of the ntp server
+    required: True
+
+  refresh:
+    description:
+    - skip refresh of ntp server
+    required: false
+    default: 'false'
 '''
 
 EXAMPLES = '''
- - name: "create a support bundle of vasa appliance"
+ - name: "set ntp server(s) of vasa appliance"
    local_action:
-     module: vasa_appliance_management_support_bundle
+     module: vasa_appliance_management_set_ntp
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
      port: "{{ appliance_port }}"
+     ntp_server: "{{ ntp_server or ip }}"
+     refresh: "{{ false or true }}"
 '''
 
 RETURN = '''
 {
   "responseMessage": "string",
-  "return_code": "int",
-  "taskId": "int"
+  "return_code": "int"
 }
 '''
 
@@ -74,7 +86,9 @@ def main():
 			host=dict(required=True, type='str'),
 			username=dict(required=True, type='str'),
 			password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143')
+			port=dict(required=False, default='8143'),
+			ntp_server=dict(required=True, type='str'),
+			refresh=dict(required=False, default='false', type='str')
 		),
 		supports_check_mode=True
 	)
@@ -83,11 +97,13 @@ def main():
 	port = module.params['port']
 	username = module.params['username']
 	password = module.params['password']
+	ntp_server = module.params['ntp_server']
+	refresh = module.params['refresh']
 
 	result = dict(changed=False)
 
 	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.create_support_bundle()
+	res = vp.set_ntp_server(ntp_server=ntp_server, skip_refresh=refresh)
 
 	try:
 		if res['status_code'] == 200:

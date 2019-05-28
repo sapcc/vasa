@@ -18,13 +18,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_ntp
+module: vasa_appliance_management_get_ssh
 
 short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list ntp server(s) of netapp vasa appliance
+- get ssh status of netapp vasa appliance
 
 options:
   host:
@@ -50,9 +50,9 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "list ntp server(s) of vasa appliance {{ inventory_hostname }}"
+ - name: "get ssh status of vasa appliance"
    local_action:
-     module: vasa_appliance_management_ntp
+     module: vasa_appliance_management_get_ssh
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -61,7 +61,6 @@ EXAMPLES = '''
 
 RETURN = '''
 {
-  "ntpServer": "string",
   "responseMessage": "string",
   "return_code": "int"
 }
@@ -69,39 +68,43 @@ RETURN = '''
 
 
 def main():
-	module = AnsibleModule(
-		argument_spec=dict(
-			host=dict(required=True, type='str'),
-			username=dict(required=True, type='str'),
-			password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143')
-		),
-		supports_check_mode=True
-	)
+    module = AnsibleModule(
+        argument_spec=dict(
+            host=dict(required=True, type='str'),
+            username=dict(required=True, type='str'),
+            password=dict(required=True, type='str', no_log='true'),
+            state=dict(default='present', choices=['present', 'absent'], type='str'),
+            port=dict(required=False, default='8143')
+        ),
 
-	host = module.params['host']
-	port = module.params['port']
-	username = module.params['username']
-	password = module.params['password']
+        supports_check_mode=True
 
-	result = dict(changed=False)
+    )
 
-	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.list_ntp_server()
+    host = module.params['host']
+    port = module.params['port']
+    username = module.params['username']
+    password = module.params['password']
 
-	try:
-		if res['status_code'] == 200:
-			result.update(result=res)
-			result.update(changed=True)
-		else:
-			result.update(result=res)
-			result.update(changed=False)
-			result.update(failed=True)
+    result = dict(changed=False)
 
-	except BaseException as e:
-		module.fail_json(message=e.message)
+    vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
 
-	module.exit_json(**result)
+    try:
+        res = vp.get_ssh_status()
 
+        if res['status_code'] == 200:
+            result.update(result=res)
+            result.update(changed=True)
+        else:
+            result.update(result=res)
+            result.update(changed=False)
+            result.update(failed=True)
+
+
+    except BaseException as e:
+        module.fail_json(message=e.message)
+
+    module.exit_json(**result)
 
 main()
