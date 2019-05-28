@@ -50,7 +50,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "create a support bundle of vasa appliance {{ inventory_hostname }}"
+ - name: "create a support bundle of vasa appliance"
    local_action:
      module: vasa_appliance_management_support_bundle
      host: "{{ inventory_hostname }}"

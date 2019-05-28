@@ -18,13 +18,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_ssh
+module: vasa_appliance_management_get_ssh
 
 short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- Enable/Disable ssh on netapp vasa appliance
+- get ssh status of netapp vasa appliance
 
 options:
   host:
@@ -47,24 +47,16 @@ options:
     - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
-
-  state:
-    description:
-    - present checks ssh
-    required: false
-    default: 'present'
-    choices: ['present', 'absent']
 '''
 
 EXAMPLES = '''
- - name: "change ssh service for vasa appliance {{ inventory_hostname }}"
+ - name: "get ssh status of vasa appliance"
    local_action:
-     module: vasa_appliance_management_ssh
-     host: "{{ inventory_hostn   ame }}"
+     module: vasa_appliance_management_get_ssh
+     host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
      port: "{{ appliance_port }}"
-     state: "{{ state | default('present') }}"
 '''
 
 RETURN = '''
@@ -93,34 +85,22 @@ def main():
     port = module.params['port']
     username = module.params['username']
     password = module.params['password']
-    state = module.params['state']
 
     result = dict(changed=False)
 
     vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
 
     try:
-        if state == 'present':
-            res = vp.enable_ssh_management_appliance()
+        res = vp.get_ssh_status()
 
-            if res['status_code'] == 200:
-                result.update(result=res)
-                result.update(changed=True)
-            else:
-                result.update(result=res)
-                result.update(changed=False)
-                result.update(failed=True)
+        if res['status_code'] == 200:
+            result.update(result=res)
+            result.update(changed=True)
+        else:
+            result.update(result=res)
+            result.update(changed=False)
+            result.update(failed=True)
 
-        elif state == 'absent':
-            res = vp.disable_ssh_management_appliance()
-
-            if res['status_code'] == 200:
-                result.update(result=res)
-                result.update(changed=True)
-            else:
-                result.update(result=res)
-                result.update(changed=False)
-                result.update(failed=True)
 
     except BaseException as e:
         module.fail_json(message=e.message)
