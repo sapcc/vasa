@@ -18,52 +18,57 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_timezone_show
+module: vasa_appliance_management_set_timezone
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show timezone of netapp pyvasa appliance
+- set timezone of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
+
+  timezone:
+    description:
+    - timezone eg. UTC
+    required: true
 '''
 
 EXAMPLES = '''
- - name: "show timezone of pyvasa appliance {{ inventory_hostname }}"
+ - name: "set timezone of vasa appliance"
    local_action:
-     module: vasa_appliance_management_timezone_show
+     module: vasa_appliance_management_set_timezone
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
      port: "{{ appliance_port }}"
+     timezone: "{{ timezone }}"
 '''
 
 RETURN = '''
 {
   "responseMessage": "string",
-  "return_code": "int",
-  "timeZone": "string"
+  "return_code": "int"
 }
 '''
 
@@ -74,7 +79,8 @@ def main():
 			host=dict(required=True, type='str'),
 			username=dict(required=True, type='str'),
 			password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143')
+			port=dict(required=False, default='8143'),
+			timezone=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -83,11 +89,12 @@ def main():
 	port = module.params['port']
 	username = module.params['username']
 	password = module.params['password']
+	timezone = module.params['timezone']
 
 	result = dict(changed=False)
 
 	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.show_timezone()
+	res = vp.set_time_zone(timezone=timezone)
 
 	try:
 		if res['status_code'] == 200:

@@ -23,21 +23,21 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_product_capability_service_restart
 
-short_description: product capabilities of netapp pyvasa unified appliance
+short_description: product capabilities of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- restart service of netapp pyvasa appliance
+- restart service of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -58,7 +58,7 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "restart service of netapp pyvasa appliance {{ inventory_hostname }}"
+ - name: "restart service of netapp vasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_product_capability_service_restart
      host: "{{ inventory_hostname }}"

@@ -18,41 +18,41 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_timezones_list
+module: vasa_appliance_management_get_timezone
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list timezones of netapp pyvasa appliance
+- show timezone of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 '''
 
 EXAMPLES = '''
- - name: "list timezones of pyvasa appliance {{ inventory_hostname }}"
+ - name: "show timezone of vasa appliance"
    local_action:
-     module: vasa_appliance_management_timezones_list
+     module: vasa_appliance_management_get_timezone
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -61,12 +61,9 @@ EXAMPLES = '''
 
 RETURN = '''
 {
-  "return_code": "int",
   "responseMessage": "string",
-  "size": "int",
-  "timezonesList": [
-    "string"
-  ]
+  "return_code": "int",
+  "timeZone": "string"
 }
 '''
 
@@ -90,7 +87,7 @@ def main():
 	result = dict(changed=False)
 
 	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.available_time_zones()
+	res = vp.get_time_zone()
 
 	try:
 		if res['status_code'] == 200:

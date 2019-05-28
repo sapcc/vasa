@@ -18,46 +18,46 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_logging_show
+module: vasa_appliance_management_get_logging
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show log level for a service type of netapp pyvasa appliance
+- show log level for a service type of netapp vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
   service:
     description:
-    - select service type (accepted values - VP, SVC)
+    - select service type (accepted values - VP, VSC, SRA)
     required: true
 '''
 
 EXAMPLES = '''
- - name: "show log level of pyvasa appliance {{ inventory_hostname }}"
+ - name: "show log level of vasa appliance"
    local_action:
-     module: vasa_appliance_management_logging_show
+     module: vasa_appliance_management_get_logging
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -95,7 +95,7 @@ def main():
 	result = dict(changed=False)
 
 	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.show_logging(service_type=service)
+	res = vp.get_logging(service_type=service)
 
 	try:
 		if res['status_code'] == 200:

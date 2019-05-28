@@ -23,7 +23,7 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_datastore_delete
 
-short_description: datastore handle of netapp pyvasa unified appliance
+short_description: datastore handle of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
@@ -32,12 +32,12 @@ description:
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 

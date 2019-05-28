@@ -20,31 +20,31 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vasa_appliance_management_network_modify
 
-short_description: managing netapp pyvasa unified appliance
+short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- modify network settings of pyvasa appliance
+- modify network settings of vasa appliance
 
 options:
   host:
     description:
-    - The ip or name of the pyvasa unified appliance to manage.
+    - The ip or name of the vasa unified appliance to manage.
     required: true
 
   username:
     description:
-    - pyvasa appliance username for login.
+    - vasa appliance username for login.
     required: true
 
   password:
     description:
-    - pyvasa appliance password for login.
+    - vasa appliance password for login.
     required: true
 
   port:
     description:
-    - The port of the pyvasa unified appliance to manage.
+    - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
 
@@ -55,12 +55,12 @@ options:
 
   gateway:
     description:
-    - gateway for pyvasa appliance
+    - gateway for vasa appliance
     required: true
 
   ip_address:
     description:
-    - ip address of pyvasa appliance
+    - ip address of vasa appliance
     required: true
 
   ip_family:
@@ -75,12 +75,12 @@ options:
 
   netmask:
     description:
-    - netmask of pyvasa appliance
+    - netmask of vasa appliance
     required: true
 '''
 
 EXAMPLES = '''
- - name: "modify network settings of pyvasa appliance {{ inventory_hostname }}"
+ - name: "modify network settings of vasa appliance {{ inventory_hostname }}"
    local_action:
      module: vasa_appliance_management_network_modify
      host: "{{ inventory_hostname }}"
