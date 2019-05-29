@@ -101,7 +101,7 @@ def main():
 		vp_password=password
 	)
 
-	res = vp.generate_certificate(
+	res = vp.generate_csr(
 		service_type=service
 	)
 

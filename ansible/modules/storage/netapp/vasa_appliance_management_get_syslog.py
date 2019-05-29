@@ -8,9 +8,8 @@
 from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
-
-from pyvasa.log_management import LogManagement
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.appliance_management import ApplianceManagement
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,13 +20,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_log_management_create
+module: vasa_appliance_management_get_syslog
 
 short_description: log management of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- create sys-log for netapp vasa appliance
+- show sys-log details by given uuid
 
 options:
   host:
@@ -51,39 +50,21 @@ options:
     - vcenter user password
     required: true
 
-  hostname:
+  uuid:
     description:
-    - sys-log hostname
-    required: true
-
-  level:
-    description:
-    - select log level for VP or SVC (accepted values - INFO, ERROR, DEBUG, TRACE)
-    required: true
-
-  pattern:
-    description:
-    - sys-log pattern
-    required: true
-
-  log_port:
-    description:
-    - sys-log port
+    - sys-log uuid
     required: true
 '''
 
 EXAMPLES = '''
- - name: "create sys-log for netapp vasa appliance"
+ - name: "show sys-log details by given uuid"
    local_action:
-     module: vasa_log_management_create
+     module: vasa_appliance_management_get_syslog
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     hostname: "{{ hostname }}"
-     level: "{{ log_level }}"
-     pattern: "{{ pattern }}"
-     log_port: "{{ log_port }}"
+     uuid: "{{ uuid }}"
 '''
 
 RETURN = '''
@@ -106,10 +87,7 @@ def main():
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			hostname=dict(required=True, type='str'),
-			level=dict(required=True, type='str'),
-			pattern=dict(required=True, type='str'),
-			log_port=dict(required=True, type='str')
+			uuid=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -118,34 +96,29 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	hostname = module.params['hostname']
-	level = module.params['level']
-	pattern = module.params['patter']
-	log_port = module.params['log_port']
-
+	uuid = module.params['uuid']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
 
-	vp = LogManagement(
+	vp = ApplianceManagement(
 		port=port,
 		url=host,
-		token=token
+		vp_user=username,
+		vp_password=password
 	)
 
-	res = vp.syslog_create(
-		host=hostname,
-		level=level,
-		pattern=pattern,
-		log_port=log_port
+	res = vp.get_sys_log(
+		uuid=uuid,
+		token=token
 	)
 
 	try:

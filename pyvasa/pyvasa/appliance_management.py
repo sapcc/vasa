@@ -7,6 +7,7 @@
 
 import requests
 import os
+
 from builtins import object
 from urllib3.exceptions import InsecureRequestWarning
 
@@ -17,8 +18,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class ApplianceManagement(object):
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/appliance/management/"
+		self.port = str(port)
+		self.url = "https://" + str(url) + ":" + self.port + "/api/rest/" + self.api + "/appliance/management/"
 		self.vp_user = vp_user
 		self.vp_password = vp_password
 
@@ -33,7 +34,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		ssh_status = r.json()
+		try:
+			ssh_status = r.json()
+		except ValueError:
+			ssh_status = dict()
+
 		ssh_status['status_code'] = r.status_code
 
 		return ssh_status
@@ -49,7 +54,11 @@ class ApplianceManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, verify=False)
 
-		ssh_enable = r.json()
+		try:
+			ssh_enable = r.json()
+		except ValueError:
+			ssh_enable = dict()
+
 		ssh_enable['status_code'] = r.status_code
 
 		return ssh_enable
@@ -65,7 +74,11 @@ class ApplianceManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, verify=False)
 
-		ssh_disable = r.json()
+		try:
+			ssh_disable = r.json()
+		except ValueError:
+			ssh_disable = dict()
+
 		ssh_disable['status_code'] = r.status_code
 
 		return ssh_disable
@@ -81,7 +94,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		details = r.json()
+		try:
+			details = r.json()
+		except ValueError:
+			details = dict()
+
 		details['status_code'] = r.status_code
 
 		return details
@@ -97,7 +114,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		nw_settings = r.json()
+		try:
+			nw_settings = r.json()
+		except ValueError:
+			nw_settings = dict()
+
 		nw_settings['status_code'] = r.status_code
 
 		return nw_settings
@@ -124,7 +145,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		set_nw = r.json()
+		try:
+			set_nw = r.json()
+		except ValueError:
+			set_nw = dict()
+
 		set_nw['status_code'] = r.status_code
 
 		return set_nw
@@ -140,9 +165,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
+		try:
+			ntp_server = r.json()
+		except ValueError:
+			ntp_server = dict()
 
-
-		ntp_server = r.json()
 		ntp_server['status_code'] = r.status_code
 
 		return ntp_server
@@ -160,7 +187,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, verify=False)
 
-		ntp = r.json()
+		try:
+			ntp = r.json()
+		except ValueError:
+			ntp = dict()
+
 		ntp['status_code'] = r.status_code
 
 		return ntp
@@ -176,7 +207,11 @@ class ApplianceManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, verify=False)
 
-		bundle = r.json()
+		try:
+			bundle = r.json()
+		except ValueError:
+			bundle = dict()
+
 		bundle['status_code'] = r.status_code
 
 		return bundle
@@ -192,7 +227,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		timezones = r.json()
+		try:
+			timezones = r.json()
+		except ValueError:
+			timezones = dict()
+
 		timezones['status_code'] = r.status_code
 
 		return timezones
@@ -208,10 +247,14 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		timezone_show = r.json()
-		timezone_show['status_code'] = r.status_code
+		try:
+			timezone = r.json()
+		except ValueError:
+			timezone = dict()
 
-		return timezone_show
+		timezone['status_code'] = r.status_code
+
+		return timezone
 
 	def set_time_zone(self, timezone=None):
 		api_endpoint = "time-zone"
@@ -225,7 +268,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, verify=False)
 
-		timezone = r.json()
+		try:
+			timezone = r.json()
+		except ValueError:
+			timezone = dict()
+
 		timezone['status_code'] = r.status_code
 
 		return timezone
@@ -242,7 +289,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		logging = r.json()
+		try:
+			logging = r.json()
+		except ValueError:
+			logging = dict()
+
 		logging['status_code'] = r.status_code
 
 		return logging
@@ -260,7 +311,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, verify=False)
 
-		log_level = r.json()
+		try:
+			log_level = r.json()
+		except ValueError:
+			log_level = dict()
+
 		log_level['status_code'] = r.status_code
 
 		return log_level
@@ -279,7 +334,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, verify=False)
 
-		pw_reset = r.json()
+		try:
+			pw_reset = r.json()
+		except ValueError:
+			pw_reset = dict()
+
 		pw_reset['status_code'] = r.status_code
 
 		return pw_reset
@@ -296,7 +355,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		ping = r.json()
+		try:
+			ping = r.json()
+		except ValueError:
+			ping = dict()
+
 		ping['status_code'] = r.status_code
 
 		return ping
@@ -312,7 +375,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		route_show = r.json()
+		try:
+			route_show = r.json()
+		except ValueError:
+			route_show = dict()
+
 		route_show['status_code'] = r.status_code
 
 		return route_show
@@ -330,7 +397,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, verify=False)
 
-		route_add = r.json()
+		try:
+			route_add = r.json()
+		except ValueError:
+			route_add = dict()
+
 		route_add['status_code'] = r.status_code
 
 		return route_add
@@ -348,7 +419,11 @@ class ApplianceManagement(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		route_delete = r.json()
+		try:
+			route_delete = r.json()
+		except ValueError:
+			route_delete = dict()
+
 		route_delete['status_code'] = r.status_code
 
 		return route_delete
@@ -365,7 +440,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		cert_show = r.json()
+		try:
+			cert_show = r.json()
+		except ValueError:
+			cert_show = dict()
+
 		cert_show['status_code'] = r.status_code
 
 		return cert_show
@@ -388,7 +467,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		cert_import = r.json()
+		try:
+			cert_import = r.json()
+		except ValueError:
+			cert_import = dict()
+
 		cert_import['status_code'] = r.status_code
 
 		return cert_import
@@ -405,7 +488,11 @@ class ApplianceManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, verify=False)
 
-		generate_cert = r.json()
+		try:
+			generate_cert = r.json()
+		except ValueError:
+			generate_cert = dict()
+
 		generate_cert['status_code'] = r.status_code
 
 		return generate_cert
@@ -422,7 +509,11 @@ class ApplianceManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, verify=False)
 
-		reset_cert = r.json()
+		try:
+			reset_cert = r.json()
+		except ValueError:
+			reset_cert = dict()
+
 		reset_cert['status_code'] = r.status_code
 
 		return reset_cert
@@ -445,7 +536,11 @@ class ApplianceManagement(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		syslog_modify = r.json()
+		try:
+			syslog_modify = r.json()
+		except ValueError:
+			syslog_modify = dict()
+
 		syslog_modify['status_code'] = r.status_code
 
 		return syslog_modify
@@ -467,7 +562,11 @@ class ApplianceManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		syslog_set = r.json()
+		try:
+			syslog_set = r.json()
+		except ValueError:
+			syslog_set = dict()
+
 		syslog_set['status_code'] = r.status_code
 
 		return syslog_set
@@ -483,7 +582,11 @@ class ApplianceManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		syslog_details = r.json()
+		try:
+			syslog_details = r.json()
+		except ValueError:
+			syslog_details = dict()
+
 		syslog_details['status_code'] = r.status_code
 
 		return syslog_details
@@ -499,7 +602,11 @@ class ApplianceManagement(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		syslog_del = r.json()
+		try:
+			syslog_del = r.json()
+		except ValueError:
+			syslog_del = dict()
+
 		syslog_del['status_code'] = r.status_code
 
 		return syslog_del

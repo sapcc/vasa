@@ -57,7 +57,7 @@ options:
 EXAMPLES = '''
  - name: "reset of vasa appliance certificate"
    local_action:
-     module: vasa_appliance_management_certificate_reset
+     module: vasa_appliance_management_certificate_generate_csr
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
