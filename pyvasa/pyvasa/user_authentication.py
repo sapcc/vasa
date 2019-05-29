@@ -7,6 +7,7 @@
 
 import requests
 import os
+
 from builtins import object
 from urllib3.exceptions import InsecureRequestWarning
 
@@ -36,11 +37,10 @@ class UserAuthentication(object):
 
         r = requests.post(url=url_action, headers=headers, json=payload)
 
-        token = dict()
-
-        if r.json()['responseMessage']:
-            token['responseMessage'] = r.json()['responseMessage']
-            token['vmwareApiSessionId'] = r.json()['vmwareApiSessionId']
+        try:
+            token = r.json()
+        except ValueError:
+            token = dict()
 
         token['status_code'] = r.status_code
 
@@ -56,10 +56,10 @@ class UserAuthentication(object):
 
         r = requests.post(url=url_action, headers=headers, verify=False)
 
-        out = dict()
-
-        if r.json()['responseMessage']:
-            out['responseMessage'] = r.json()['responseMessage']
+        try:
+            out = r.json()
+        except ValueError:
+            out = dict()
 
         out['status_code'] = r.status_code
 

@@ -18,13 +18,12 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_network_modify
+module: vasa_appliance_management_set_password
 
 short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
-description:
-- modify network settings of vasa appliance
+description: set password for maint unser of vasa appliance
 
 options:
   host:
@@ -45,54 +44,37 @@ options:
   port:
     description:
     - The port of the vasa unified appliance to manage.
-    required: false
+    required: False
     default: '8143'
 
-  dns_server:
+  user:
     description:
-    - list of dns_server
-    required: true
+    - select user
+    required: False
+    default: 'maint'
 
-  gateway:
+  old_pw:
     description:
-    - gateway for vasa appliance
-    required: true
+    - old user password
+    required: True
 
-  ip_address:
+  new_pw:
     description:
-    - ip address of vasa appliance
-    required: true
-
-  ip_family:
-    description:
-    - IPV4 or IPV6 ip address family (accapted values - IPV4, IPV6)
-    required: true
-
-  mode:
-    description:
-    - mode for ip address (accapted values - STATIC, DYNAMIC)
-    required: true
-
-  netmask:
-    description:
-    - netmask of vasa appliance
-    required: true
+    - new user password
+    required: True
 '''
 
 EXAMPLES = '''
- - name: "modify network settings of vasa appliance {{ inventory_hostname }}"
+ - name: "set for maint user of vasa appliance"
    local_action:
-     module: vasa_appliance_management_network_modify
+     module: vasa_appliance_management_set_password
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
      port: "{{ appliance_port }}"
-     dns_server: "{{ dns_server }}"
-     gateway: "{{ gateway }}"
-     ip_address: "{{ ip_address }}"
-     ip_family: "{{ ip_family }}"
-     mode: "{{ mode }}"
-     netmask: "{{ netmask }}"
+     user: "{{ maint or administrator }}"
+     old_pw: "{{ old_password }}"
+     new_pw: "{{ new_password }}"
 '''
 
 RETURN = '''
@@ -110,12 +92,9 @@ def main():
 			username=dict(required=True, type='str'),
 			password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			dns_server=dict(required=True, type='str'),
-			gateway=dict(required=True, type='str'),
-			ip_address=dict(required=True, type='str'),
-			ip_family=dict(required=True, type='str'),
-			mode=dict(required=True, type='str'),
-			netmask=dict(required=True, type='str')
+			user=dict(required=False, default='maint', type='str'),
+			old_pw=dict(required=True, type='str', no_log='true'),
+			new_pw=dict(required=True, type='str', no_log='true')
 		),
 		supports_check_mode=True
 	)
@@ -124,30 +103,14 @@ def main():
 	port = module.params['port']
 	username = module.params['username']
 	password = module.params['password']
-	dns_server = module.params['dns_server']
-	gw = module.params['gateway']
-	ip = module.params['ip_address']
-	ip_family = module.params['ip_family']
-	mode = module.params['mode']
-	nmask = module.params['netmask']
+	user = module.params['user']
+	old_pw = module.params['old_pw']
+	new_pw = module.params['new_pw']
 
 	result = dict(changed=False)
 
-	vp = ApplianceManagement(
-		port=port,
-		url=host,
-		vp_user=username,
-		vp_password=password
-	)
-
-	res = vp.modify_network_settings(
-		dns_server=dns_server,
-		gw=gw,
-		ip=ip,
-		ip_family=ip_family,
-		mode=mode,
-		nmask=nmask
-	)
+	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
+	res = vp.set_password(user=user, old_pw=old_pw, new_pw=new_pw)
 
 	try:
 		if res['status_code'] == 200:

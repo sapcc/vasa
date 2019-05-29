@@ -102,8 +102,17 @@ def main():
 
 	result = dict(changed=False)
 
-	vp = ApplianceManagement(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.set_ntp_server(ntp_server=ntp_server, skip_refresh=refresh)
+	vp = ApplianceManagement(
+		port=port,
+		url=host,
+		vp_user=username,
+		vp_password=password
+	)
+
+	res = vp.set_ntp_server(
+		ntp_server=ntp_server,
+		skip_refresh=refresh
+	)
 
 	try:
 		if res['status_code'] == 200:

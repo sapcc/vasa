@@ -8,9 +8,8 @@
 from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
-
-from pyvasa.log_management import LogManagement
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.appliance_management import ApplianceManagement
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,13 +20,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_log_management_details
+module: vasa_log_management_create
 
 short_description: log management of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show sys-log details by given uuid
+- create sys-log for netapp vasa appliance
 
 options:
   host:
@@ -51,21 +50,39 @@ options:
     - vcenter user password
     required: true
 
-  uuid:
+  hostname:
     description:
-    - sys-log uuid
+    - sys-log hostname
+    required: true
+
+  level:
+    description:
+    - select log level for VP or SVC (accepted values - INFO, ERROR, DEBUG, TRACE, WARN, FATAL, OFF and ALL)
+    required: true
+
+  pattern:
+    description:
+    - sys-log pattern (accepted values - "%d (%t) %-5p [%c{1}] - %m%n")
+    required: true
+
+  log_port:
+    description:
+    - sys-log port (acceptable port range is from 1 to 65535)
     required: true
 '''
 
 EXAMPLES = '''
- - name: "show sys-log details by given uuid"
+ - name: "create sys-log for netapp vasa appliance"
    local_action:
-     module: vasa_log_management_details
+     module: vasa_log_management_create
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     uuid: "{{ uuid }}"
+     hostname: "{{ hostname }}"
+     level: "{{ log_level }}"
+     pattern: "{{ pattern }}"
+     log_port: "{{ log_port }}"
 '''
 
 RETURN = '''
@@ -87,8 +104,13 @@ def main():
 			host=dict(required=True, type='str'),
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143'),
-			uuid=dict(required=True, type='str')
+			port=dict(required=False, default=8143),
+			username=dict(required=True, type='str'),
+			password=dict(required=True, type='str', no_log='true'),
+			hostname=dict(required=True, type='str'),
+			level=dict(required=True, type='str'),
+			pattern=dict(required=True, type='str'),
+			log_port=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -97,40 +119,56 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	uuid = module.params['uuid']
+	hostname = module.params['hostname']
+	level = module.params['level']
+	pattern = module.params['pattern']
+	log_port = module.params['log_port']
+	username = module.params['username']
+	password = module.params['password']
+
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
-	vp = LogManagement(
+	if not token_id:
+		module.fail_json(msg="No Token!")
+
+	vp = ApplianceManagement(
 		port=port,
 		url=host,
-		token=token
+		vp_user=username,
+		vp_password=password
 	)
 
-	res = vp.syslog_details(
-		uuid=uuid
+	res = vp.set_sys_log(
+		token=token_id,
+		host=hostname,
+		level=level,
+		pattern=pattern,
+		log_port=log_port
 	)
 
 	try:
 		if res['status_code'] == 200:
 			result.update(result=res)
 			result.update(changed=True)
+
 		else:
 			result.update(result=res)
 			result.update(changed=False)
 			result.update(failed=True)
 
 	except BaseException as e:
-		module.fail_json(message=e.message)
+		module.fail_json(msg=e.message)
 
 	module.exit_json(**result)
 

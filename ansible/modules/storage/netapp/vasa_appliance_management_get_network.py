@@ -18,7 +18,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_network
+module: vasa_appliance_management_get_network
 
 short_description: managing netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -50,9 +50,9 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "show network details of vasa appliance {{ inventory_hostname }}"
+ - name: "show network details of vasa appliance"
    local_action:
-     module: vasa_appliance_management_network
+     module: vasa_appliance_management_get_network
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
@@ -106,7 +106,7 @@ def main():
 		vp_password=password
 	)
 
-	res = vp.list_network_settings()
+	res = vp.get_network_settings()
 
 	try:
 		if res['status_code'] == 200:
