@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyvasa.storage_capability_profile import StorageCapability
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.storage_capability_profile import StorageCapabilityProfile
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -97,22 +97,26 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
-	vp = StorageCapability(
+	if not token_id:
+		module.fail_json(msg="No Token!")
+
+	vp = StorageCapabilityProfile(
 		port=port,
 		url=host,
-		token=token,
+		token=token_id
 	)
 
-	res = vp.delete_storage_capability_profile_id(profile_id=profile_id)
+	res = vp.delete_storage_capabilities_by_id(profile_id=profile_id)
 
 	try:
 		if res['status_code'] == 200:

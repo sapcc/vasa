@@ -225,6 +225,9 @@ def main():
 	token = connect.login()
 	token_id = token.get('vmwareApiSessionId')
 
+	if not token_id:
+		module.fail_json(msg="No Token!")
+
 	vp = Datastore(
 		port=port,
 		url=host,
