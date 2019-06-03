@@ -5,8 +5,8 @@ This repository contains classes and modules to manage the NetApp VASA Appliance
 ## Requirements
 
   * NetApp VASA Provider Version 7.2.1
-  * Ansible Version 2.6.2
-  * Python Version l2.7.15rc1
+  * Ansible Version 2.7.15.rc1
+  * Python Version 3.6.7
   * pyvasa package
 
 ## API Documentation
