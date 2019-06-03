@@ -17,8 +17,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class StorageCapabilityProfile(object):
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/storage-capabilities"
+		self.port = str(port)
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/storage-capabilities"
 		self.vp_user = vp_user
 		self.vp_password = vp_password
 
@@ -34,7 +34,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		list_profiles = r.json()
+		try:
+			list_profiles = r.json()
+		except ValueError:
+			list_profiles = dict()
+
 		list_profiles['status_code'] = r.status_code
 
 		return list_profiles
@@ -69,7 +73,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		create_profile = r.json()
+		try:
+			create_profile = r.json()
+		except ValueError:
+			create_profile = dict()
+
 		create_profile['status_code'] = r.status_code
 
 		return create_profile
@@ -107,7 +115,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		update_profile = r.json()
+		try:
+			update_profile = r.json()
+		except ValueError:
+			update_profile = dict()
+
 		update_profile['status_code'] = r.status_code
 
 		return update_profile
@@ -122,7 +134,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		delete_profiles = r.json()
+		try:
+			delete_profiles = r.json()
+		except ValueError:
+			delete_profiles = dict()
+
 		delete_profiles['status_code'] = r.status_code
 
 		return delete_profiles
@@ -137,7 +153,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		delete_profile_id = r.json()
+		try:
+			delete_profile_id = r.json()
+		except ValueError:
+			delete_profile_id = dict()
+
 		delete_profile_id['status_code'] = r.status_code
 
 		return delete_profile_id
@@ -152,7 +172,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		show_profile_id = r.json()
+		try:
+			show_profile_id = r.json()
+		except ValueError:
+			show_profile_id = dict()
+
 		show_profile_id['status_code'] = r.status_code
 
 		return show_profile_id
@@ -193,7 +217,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		clone_profile = r.json()
+		try:
+			clone_profile = r.json()
+		except ValueError:
+			clone_profile = dict()
+
 		clone_profile['status_code'] = r.status_code
 
 		return clone_profile
@@ -208,7 +236,11 @@ class StorageCapabilityProfile(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		show_profile_id = r.json()
+		try:
+			show_profile_id = r.json()
+		except ValueError:
+			show_profile_id = dict()
+
 		show_profile_id['status_code'] = r.status_code
 
 		return show_profile_id
