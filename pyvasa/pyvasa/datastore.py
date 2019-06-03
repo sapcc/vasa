@@ -17,7 +17,7 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class Datastore(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port
+		self.port = str(port)
 		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/datastore"
 
 		if token is not None:
@@ -40,7 +40,11 @@ class Datastore(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		mount = r.json()
+		try:
+			mount = r.json()
+		except ValueError:
+			mount = dict()
+
 		mount['status_code'] = r.status_code
 
 		return mount
@@ -63,7 +67,11 @@ class Datastore(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		mounts = r.json()
+		try:
+			mounts = r.json()
+		except ValueError:
+			mounts = dict()
+
 		mounts['status_code'] = r.status_code
 
 		return mounts
@@ -86,10 +94,14 @@ class Datastore(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		mounts = r.json()
-		mounts['status_code'] = r.status_code
+		try:
+			umount = r.json()
+		except ValueError:
+			umount = dict()
 
-		return mounts
+		umount['status_code'] = r.status_code
+
+		return umount
 
 	def create_datastore(self, cluster_ip=None, ds_type=None, scp=None, description=None, flexvol=None,
 	                     ds_name=None, protocol=None, target=None, vserver=None):
@@ -115,7 +127,11 @@ class Datastore(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		ds_create = r.json()
+		try:
+			ds_create = r.json()
+		except ValueError:
+			ds_create = dict()
+
 		ds_create['status_code'] = r.status_code
 
 		return ds_create
@@ -131,7 +147,11 @@ class Datastore(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		ds_delete = r.json()
+		try:
+			ds_delete = r.json()
+		except ValueError:
+			ds_delete = dict()
+
 		ds_delete['status_code'] = r.status_code
 
 		return ds_delete
@@ -147,7 +167,11 @@ class Datastore(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		ds_details = r.json()
+		try:
+			ds_details = r.json()
+		except ValueError:
+			ds_details = dict
+
 		ds_details['status_code'] = r.status_code
 
 		return ds_details
@@ -164,7 +188,11 @@ class Datastore(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		ds_cfilter = r.json()
+		try:
+			ds_cfilter = r.json()
+		except ValueError:
+			ds_cfilter = dict()
+
 		ds_cfilter['status_code'] = r.status_code
 
 		return ds_cfilter
@@ -182,7 +210,11 @@ class Datastore(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		ds_afilter = r.json()
+		try:
+			ds_afilter = r.json()
+		except ValueError:
+			ds_afilter = dict()
+
 		ds_afilter['status_code'] = r.status_code
 
 		return ds_afilter
@@ -210,7 +242,11 @@ class Datastore(object):
 
 		r = requests.put(url=url_action, headers=headers, json=payload, verify=False)
 
-		s_add = r.json()
+		try:
+			s_add = r.json()
+		except ValueError:
+			s_add = dict()
+
 		s_add['status_code'] = r.status_code
 
 		return s_add
@@ -228,7 +264,11 @@ class Datastore(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		s_rm = r.json()
-		s_rm['status_code'] = r.status_code
+		try:
+			s_delete = r.json()
+		except ValueError:
+			s_delete = dict()
 
-		return s_rm
+		s_delete['status_code'] = r.status_code
+
+		return s_delete
