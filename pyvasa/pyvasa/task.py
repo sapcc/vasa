@@ -17,8 +17,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class Task(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/task/"
+		self.port = str(port)
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/task/"
 
 		if token is not None:
 			self.token = token
@@ -34,7 +34,11 @@ class Task(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		task_status = r.json()
+		try:
+			task_status = r.json()
+		except ValueError:
+			task_status = dict()
+
 		task_status['status_code'] = r.status_code
 
 		return task_status

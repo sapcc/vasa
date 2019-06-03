@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyvasa.commons import Commons
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.task import Task
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -100,22 +100,26 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
-	vp = Commons(
+	if not token_id:
+		module.fail_json(msg="No Token!")
+
+	vp = Task(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.task_status(task_id=task_id)
+	res = vp.get_task_status(task_id=task_id)
 
 	try:
 		if res['status_code'] == 200:
