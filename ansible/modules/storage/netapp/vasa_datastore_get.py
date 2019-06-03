@@ -6,11 +6,10 @@
 #
 
 from __future__ import absolute_import, division, print_function
-
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.datastore import Datastore
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,7 +20,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_datastore_details
+module: vasa_datastore_get
 
 short_description: datastore handle of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -54,7 +53,8 @@ options:
   ds_type:
     description:
     - type of the datastore
-    required: true
+    required: false
+    default: 'VVOL'
 
   ds_name:
     description:
@@ -65,7 +65,7 @@ options:
 EXAMPLES = '''
  - name: "show details of a datastore on vcenter"
    local_action:
-     module: vasa_datastore_details
+     module: vasa_datastore_get
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
@@ -200,7 +200,7 @@ def main():
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			ds_type=dict(required=True, type='str'),
+			ds_type=dict(required=False, default='VVOL'),
 			ds_name=dict(required=True, type='str')
 		),
 		supports_check_mode=True
@@ -215,22 +215,23 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = Datastore(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.datastore_details(
+	res = vp.get_datastore(
 		ds_type=ds_type,
 		ds_name=ds_name
 	)

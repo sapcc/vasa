@@ -18,7 +18,7 @@ class Datastore(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
 		self.port = str(port)
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/datastore"
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/datastore"
 
 		if token is not None:
 			self.token = token
@@ -116,9 +116,9 @@ class Datastore(object):
 			"dataStoreType": ds_type,
 			"defaultSCP": scp,
 			"description": description,
-			"flexVolSCPMap": {
+			"flexVolSCPMap": [
 				flexvol
-			},
+				],
 			"name": ds_name,
 			"protocol": protocol,
 			"targetMoref": target,

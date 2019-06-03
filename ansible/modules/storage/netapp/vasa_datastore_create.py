@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.datastore import Datastore
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -59,7 +59,8 @@ options:
   ds_type:
     description:
     - type of the datastore
-    required: true
+    required: false
+    default: 'VVOL'
 
   scp:
     description:
@@ -133,7 +134,7 @@ def main():
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
 			cluster_ip=dict(required=True, type='str'),
-			ds_type=dict(required=True, type='str'),
+			ds_type=dict(required=False, default='VVOL'),
 			scp=dict(required=True, type='str'),
 			description=dict(required=True, type='str'),
 			flexvol=dict(required=True, type='str'),
@@ -161,22 +162,23 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = Datastore(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.datastore_create(
+	res = vp.create_datastore(
 		cluster_ip=cluster_ip,
 		ds_type=ds_type,
 		scp=scp,
