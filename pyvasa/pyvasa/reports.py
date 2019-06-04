@@ -18,7 +18,7 @@ class Reports(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
 		self.port = port
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/report/"
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/report/"
 
 		if token is not None:
 			self.token = token
@@ -33,7 +33,11 @@ class Reports(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		datastore_details = r.json()
+		try:
+			datastore_details = r.json()
+		except ValueError:
+			datastore_details = dict()
+
 		datastore_details['status_code'] = r.status_code
 
 		return datastore_details
@@ -48,7 +52,11 @@ class Reports(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		vm_details = r.json()
+		try:
+			vm_details = r.json()
+		except ValueError:
+			vm_details = dict()
+
 		vm_details['status_code'] = r.status_code
 
 		return vm_details
