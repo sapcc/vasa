@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.storage_systems import StorageSystems
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,7 +21,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_storage_systems_flexvol_list_by_scp
+module: vasa_storage_systems_get_flexvols
 
 short_description: storage systems of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -70,7 +70,7 @@ options:
 EXAMPLES = '''
  - name: "list flexvol(s) based on storage capability profile"
    local_action:
-     module: vasa_storage_systems_flexvol_list_by_scp
+     module: vasa_storage_systems_get_flexvols
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
@@ -105,6 +105,7 @@ def main():
 			port=dict(required=False, default='8143'),
 			vserver=dict(required=True, type='str'),
 			scp=dict(required=True, type='str'),
+			protocol=dict(required=True, type='str'),
 			cluster=dict(required=True, type='str')
 		),
 		supports_check_mode=True
@@ -116,26 +117,31 @@ def main():
 	vc_password = module.params['vc_password']
 	vserver = module.params['vserver']
 	scp = module.params['scp']
-	cluster = module.params['cluster_ip']
+	protocol = module.params['protocol']
+	cluster = module.params['cluster']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
+
+	if not token_id:
+		module.fail_json(msg="No Token!")
 
 	vp = StorageSystems(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.list_flexvol_by_scp(
+	res = vp.get_flexvols(
 		vserver=vserver,
 		scp=scp,
 		protocol=protocol,

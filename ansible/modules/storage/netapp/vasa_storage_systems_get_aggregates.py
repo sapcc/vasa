@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.storage_systems import StorageSystems
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,7 +21,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_storage_systems_aggregates_list
+module: vasa_storage_systems_get_aggregates
 
 short_description: storage systems of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -60,7 +60,7 @@ options:
 EXAMPLES = '''
  - name: "get all aggregates and details"
    local_action:
-     module: vasa_storage_systems_aggregates_list
+     module: vasa_storage_systems_get_aggregates
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
@@ -106,22 +106,26 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
+
+	if not token_id:
+		module.fail_json(msg="No Token!")
 
 	vp = StorageSystems(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.list_aggregates(
+	res = vp.get_aggregates(
 		cluster_id=cluster_id
 	)
 
