@@ -17,8 +17,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class ExtentionManagement(object):
 	def __init__(self, port=None, url=None, vp_user=None, vp_password=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/vsc"
+		self.port = str(port)
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/vsc"
 		self.vasa_host = url
 
 		if vp_user is not None:
@@ -37,7 +37,11 @@ class ExtentionManagement(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		vsc_details = r.json()
+		try:
+			vsc_details = r.json()
+		except ValueError:
+			vsc_details = dict()
+
 		vsc_details['status_code'] = r.status_code
 
 		return vsc_details
@@ -61,22 +65,29 @@ class ExtentionManagement(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		register = r.json()
+		try:
+			register = r.json()
+		except ValueError:
+			register = dict()
+
 		register['status_code'] = r.status_code
 
 		return register
 
-	def unregister_vsc(self, vc_user=None, vc_password=None):
+	def unregister_vsc(self, token=None):
 		url_action = self.url
 		headers = {
 			'Accept': 'application/json',
-			'vcenter-password': vc_password,
-			'vcenter-username': vc_user
+			'vmware-api-session-id': token
 		}
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		unregister = r.json()
+		try:
+			unregister = r.json()
+		except ValueError:
+			unregister = dict()
+
 		unregister['status_code'] = r.status_code
 
 		return unregister

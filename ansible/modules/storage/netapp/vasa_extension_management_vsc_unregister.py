@@ -7,7 +7,8 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from pyvasa.manage_extentions import ManageExtentions
+from pyvasa.user_authentication import UserAuthentication
+from pyvasa.extension_management import ExtentionManagement
 
 __metaclass__ = type
 
@@ -18,13 +19,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_manage_extentions_vsc_register
+module: vasa_extension_management_vsc_unregister
 
 short_description: manage extentions of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- register netapp VSC vasa appliance to vcenter
+- unregister netapp VSC vasa appliance to vcenter
 
 options:
   host:
@@ -32,27 +33,11 @@ options:
     - The ip or name of the vasa unified appliance to manage.
     required: true
 
-  username:
-    description:
-    - vasa appliance username for login.
-    required: true
-
-  password:
-    description:
-    - vasa appliance password for login.
-    required: true
-
   port:
     description:
     - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
-
-  vc_port:
-    description:
-    - vcenter port
-    required: false
-    default: '443'
 
   vc_user:
     description:
@@ -63,23 +48,14 @@ options:
     description:
     - vcenter user password
     required: true
-
-  vc_hostname:
-    description:
-    - vcenter hostname or ip
-    required: true
 '''
 
 EXAMPLES = '''
- - name: "register VSC vasa appliance {{ inventory_hostname }} to vcenter"
+ - name: "unregister VSC vasa appliance {{ inventory_hostname }} to vcenter"
    local_action:
-     module: vasa_manage_extentions_register
+     module: vasa_extension_management_vsc_unregister
      host: "{{ inventory_hostname }}"
-     username: "{{ username }}"
-     password: "{{ password }}"
      port: "{{ appliance_port }}"
-     vc_port: "{{ vcenter_port }}"
-     vc_hostname: "{{ vcenter_hostname or vcenter_ip }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
 '''
@@ -96,36 +72,39 @@ def main():
 	module = AnsibleModule(
 		argument_spec=dict(
 			host=dict(required=True, type='str'),
-			username=dict(required=True, type='str'),
-			password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143'),
-			vc_hostname=dict(required=True, type='str'),
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
-			vc_port=dict(required=False, default='443')
+			port=dict(required=False, default='8143')
 		),
 		supports_check_mode=True
 	)
 
 	host = module.params['host']
-	username = module.params['username']
-	password = module.params['password']
 	port = module.params['port']
-	vc_hostname = module.params['vc_hostname']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	vc_port = module.params['vc_port']
 
 	result = dict(changed=False)
 
-	vp = ManageExtentions(port=port, url=host, vp_user=username, vp_password=password)
-
-	res = vp.register_vsc(
-		vc_hostname=vc_hostname,
-		vc_user=vc_user,
-		vc_password=vc_password,
-		vc_port=vc_port
+	connect = UserAuthentication(
+		port=port,
+		url=host,
+		vcenter_user=vc_user,
+		vcenter_password=vc_password
 	)
+
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
+
+	if not token_id:
+		module.fail_json(msg="No Token!")
+
+	vp = ExtentionManagement(
+		port=port,
+		url=host
+	)
+
+	res = vp.unregister_vsc(token=token_id)
 
 	try:
 		if res['status_code'] == 200:

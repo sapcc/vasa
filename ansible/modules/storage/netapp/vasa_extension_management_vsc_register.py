@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from pyvasa.manage_extentions import ManageExtentions
+from pyvasa.extension_management import ExtentionManagement
 
 __metaclass__ = type
 
@@ -18,13 +18,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_manage_extentions_details
+module: vasa_extension_management_vsc_register
 
 short_description: manage extentions of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- list details of netapp VSC vasa appliance
+- register netapp VSC vasa appliance to vcenter
 
 options:
   host:
@@ -47,30 +47,47 @@ options:
     - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
+
+  vc_port:
+    description:
+    - vcenter port
+    required: false
+    default: '443'
+
+  vc_user:
+    description:
+    - vcenter username
+    required: true
+
+  vc_password:
+    description:
+    - vcenter user password
+    required: true
+
+  vc_hostname:
+    description:
+    - vcenter hostname or ip
+    required: true
 '''
 
 EXAMPLES = '''
- - name: "list details of VSC vasa appliance {{ inventory_hostname }}"
+ - name: "register VSC vasa appliance {{ inventory_hostname }} to vcenter"
    local_action:
-     module: vasa_manage_extentions_details
+     module: vasa_extension_management_vsc_register
      host: "{{ inventory_hostname }}"
      username: "{{ username }}"
      password: "{{ password }}"
      port: "{{ appliance_port }}"
+     vc_port: "{{ vcenter_port }}"
+     vc_hostname: "{{ vcenter_hostname or vcenter_ip }}"
+     vc_user: "{{ vcenter_username }}"
+     vc_password: "{{ vcenter_password }}"
 '''
 
 RETURN = '''
 {
-  "credential": {
-    "hostname": "string",
-    "password": "string",
-    "port": "int",
-    "username": "string"
-  },
-  "networkInterfaceHostAddresses": [
-    "string"
-  ],
-    "return_code": "int"
+  "responseMessage": "string",
+  "return_code": "int"
 }
 '''
 
@@ -81,20 +98,39 @@ def main():
 			host=dict(required=True, type='str'),
 			username=dict(required=True, type='str'),
 			password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143')
+			port=dict(required=False, default='8143'),
+			vc_hostname=dict(required=True, type='str'),
+			vc_user=dict(required=True, type='str'),
+			vc_password=dict(required=True, type='str', no_log='true'),
+			vc_port=dict(required=False, default='443')
 		),
 		supports_check_mode=True
 	)
 
 	host = module.params['host']
-	port = module.params['port']
 	username = module.params['username']
 	password = module.params['password']
+	port = module.params['port']
+	vc_hostname = module.params['vc_hostname']
+	vc_user = module.params['vc_user']
+	vc_password = module.params['vc_password']
+	vc_port = module.params['vc_port']
 
 	result = dict(changed=False)
 
-	vp = ManageExtentions(port=port, url=host, vp_user=username, vp_password=password)
-	res = vp.show_details_vsc()
+	vp = ExtentionManagement(
+		port=port,
+		url=host,
+		vp_user=username,
+		vp_password=password
+	)
+
+	res = vp.register_vsc(
+		vc_hostname=vc_hostname,
+		vc_user=vc_user,
+		vc_password=vc_password,
+		vc_port=vc_port
+	)
 
 	try:
 		if res['status_code'] == 200:

@@ -7,7 +7,7 @@
 
 from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
-from pyvasa.manage_extentions import ManageExtentions
+from pyvasa.extension_management import ExtentionManagement
 
 __metaclass__ = type
 
@@ -18,13 +18,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_manage_extentions_vsc_unregister
+module: vasa_extension_management_get_vsc_status
 
 short_description: manage extentions of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- unregister netapp VSC vasa appliance to vcenter
+- list details of netapp VSC vasa appliance
 
 options:
   host:
@@ -32,37 +32,45 @@ options:
     - The ip or name of the vasa unified appliance to manage.
     required: true
 
+  username:
+    description:
+    - vasa appliance username for login.
+    required: true
+
+  password:
+    description:
+    - vasa appliance password for login.
+    required: true
+
   port:
     description:
     - The port of the vasa unified appliance to manage.
     required: false
     default: '8143'
-
-  vc_user:
-    description:
-    - vcenter username
-    required: true
-
-  vc_password:
-    description:
-    - vcenter user password
-    required: true
 '''
 
 EXAMPLES = '''
- - name: "unregister VSC vasa appliance {{ inventory_hostname }} to vcenter"
+ - name: "list details of VSC vasa appliance {{ inventory_hostname }}"
    local_action:
-     module: vasa_manage_extentions_unregister
+     module: vasa_extension_management_get_vsc_status
      host: "{{ inventory_hostname }}"
+     username: "{{ username }}"
+     password: "{{ password }}"
      port: "{{ appliance_port }}"
-     vc_user: "{{ vcenter_username }}"
-     vc_password: "{{ vcenter_password }}"
 '''
 
 RETURN = '''
 {
-  "responseMessage": "string",
-  "return_code": "int"
+  "credential": {
+    "hostname": "string",
+    "password": "string",
+    "port": "int",
+    "username": "string"
+  },
+  "networkInterfaceHostAddresses": [
+    "string"
+  ],
+    "return_code": "int"
 }
 '''
 
@@ -71,8 +79,8 @@ def main():
 	module = AnsibleModule(
 		argument_spec=dict(
 			host=dict(required=True, type='str'),
-			vc_user=dict(required=True, type='str'),
-			vc_password=dict(required=True, type='str', no_log='true'),
+			username=dict(required=True, type='str'),
+			password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143')
 		),
 		supports_check_mode=True
@@ -80,13 +88,19 @@ def main():
 
 	host = module.params['host']
 	port = module.params['port']
-	vc_user = module.params['vc_user']
-	vc_password = module.params['vc_password']
+	username = module.params['username']
+	password = module.params['password']
 
 	result = dict(changed=False)
 
-	vp = ManageExtentions(port=port, url=host)
-	res = vp.unregister_vsc(vc_user=vc_user, vc_password=vc_password)
+	vp = ExtentionManagement(
+		port=port,
+		url=host,
+		vp_user=username,
+		vp_password=password
+	)
+
+	res = vp.get_vsc_status()
 
 	try:
 		if res['status_code'] == 200:
