@@ -17,8 +17,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class StorageSystems(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/storage-systems"
+		self.port = str(port)
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/storage-systems"
 
 		if token is not None:
 			self.token = token
@@ -32,7 +32,11 @@ class StorageSystems(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		get_storage_sys = r.json()
+		try:
+			get_storage_sys = r.json()
+		except ValueError:
+			get_storage_sys = dict()
+
 		get_storage_sys['status_code'] = r.status_code
 
 		return get_storage_sys
@@ -53,7 +57,11 @@ class StorageSystems(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		add_storage = r.json()
+		try:
+			add_storage = r.json()
+		except ValueError:
+			add_storage = dict()
+
 		add_storage['status_code'] = r.status_code
 
 		return add_storage
@@ -68,7 +76,11 @@ class StorageSystems(object):
 
 		r = requests.delete(url=url_action, headers=headers, verify=False)
 
-		del_storage = r.json()
+		try:
+			del_storage = r.json()
+		except ValueError:
+			del_storage = dict()
+
 		del_storage['status_code'] = r.status_code
 
 		return del_storage
@@ -84,7 +96,11 @@ class StorageSystems(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		aggregate = r.json()
+		try:
+			aggregate = r.json()
+		except ValueError:
+			aggregate = dict()
+
 		aggregate['status_code'] = r.status_code
 
 		return aggregate
@@ -99,7 +115,11 @@ class StorageSystems(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		aggregates = r.json()
+		try:
+			aggregates = r.json()
+		except ValueError:
+			aggregates = dict()
+
 		aggregates['status_code'] = r.status_code
 
 		return aggregates
@@ -114,7 +134,11 @@ class StorageSystems(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		cluster = r.json()
+		try:
+			cluster = r.json()
+		except ValueError:
+			cluster = dict()
+
 		cluster['status_code'] = r.status_code
 
 		return cluster
@@ -133,7 +157,11 @@ class StorageSystems(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		flexvols = r.json()
+		try:
+			flexvols = r.json()
+		except ValueError:
+			flexvols = dict()
+
 		flexvols['status_code'] = r.status_code
 
 		return flexvols
@@ -159,7 +187,11 @@ class StorageSystems(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		flexvol_create = r.json()
+		try:
+			flexvol_create = r.json()
+		except ValueError:
+			flexvol_create = dict()
+
 		flexvol_create['status_code'] = r.status_code
 
 		return flexvol_create
@@ -174,7 +206,11 @@ class StorageSystems(object):
 
 		r = requests.post(url=url_action, headers=headers, verify=False)
 
-		rediscover = r.json()
+		try:
+			rediscover = r.json()
+		except ValueError:
+			rediscover = dict()
+
 		rediscover['status_code'] = r.status_code
 
 		return rediscover
