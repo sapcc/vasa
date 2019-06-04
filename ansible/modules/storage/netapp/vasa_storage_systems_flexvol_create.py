@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.storage_systems import StorageSystems
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -75,6 +75,11 @@ options:
     description:
     - flex volume size in MB
     required: true
+    
+  volume:
+    description:
+    - name of the new flex volume
+    required: true
 '''
 
 EXAMPLES = '''
@@ -90,6 +95,7 @@ EXAMPLES = '''
      aggregate: "{{ aggregate }}"
      cluster_ip: "{{ cluster_ip }}"
      size: "{{ size }}"
+     volume: "{{ volume_name }}"
 '''
 
 RETURN = '''
@@ -185,7 +191,8 @@ def main():
 			scp=dict(required=True, type='str'),
 			aggregate=dict(required=True, type='str'),
 			cluster_ip=dict(required=True, type='str'),
-			size=dict(required=True, type='str')
+			size=dict(required=True, type='str'),
+			volume=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -199,25 +206,27 @@ def main():
 	aggregate = module.params['aggregate']
 	cluster_ip = module.params['cluster_ip']
 	size = module.params['size']
+	volume = module.params['volume']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = StorageSystems(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.create_flexvol_by_scp(
+	res = vp.create_flexvol(
 		vserver=vserver,
 		scp=scp,
 		aggr=aggregate,

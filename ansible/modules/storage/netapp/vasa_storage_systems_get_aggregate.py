@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.storage_systems import StorageSystems
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,13 +21,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_storage_systems_flexvol_details
+module: vasa_storage_systems_get_aggregate
 
 short_description: storage systems of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show flexvol details by given SVM of vasa appliance
+- get details of a aggregate
 
 options:
   host:
@@ -51,46 +51,38 @@ options:
     - vcenter user password
     required: true
 
-  vserver:
+  aggregate:
     description:
-    - vserver name
+    - aggregate on storage cluster
     required: true
-
-  flexvol:
+    
+  cluster_id:
     description:
-    - flexvolume name
+    - id of the storage cluster
     required: true
 '''
 
 EXAMPLES = '''
- - name: "show flexvol details by given SVM of vasa appliance {{ inventory_hostname }}"
+ - name: "get all aggregates and details"
    local_action:
-     module: vasa_storage_systems_flexvol_details
+     module: vasa_storage_systems_get_aggregate
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     vserver: "{{ vserver }}"
-     flexvol: "{{ flexvolume_name }}"
+     aggregate: "{{ aggregate }}"
+     cluster_id: "{{ cluster_id }}"
 '''
 
 RETURN = '''
 {
-  "flexVols": [
+  "aggregates": [
     {
-      "aggregateName": "string",
-      "autoGrowEnabled": true,
-      "junctionPath": "string",
+      "freeCapacity": 0,
       "name": "string",
-      "root": true,
-      "sizeAvailable": 0,
-      "sizeTotal": 0,
-      "sizeUsed": 0,
-      "spaceGuarentee": "string",
-      "state": "string",
-      "type": "string",
-      "uuid": "string",
-      "vserverName": "string"
+      "provisionedCapacity": 0,
+      "status": "string",
+      "usedCapacity": 0
     }
   ],
   "numOfRecords": 0,
@@ -107,8 +99,8 @@ def main():
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			vserver=dict(required=True, type='str'),
-			flexvol=dict(required=True, type='str')
+			aggregate=dict(required=True, type='str'),
+			cluster_id=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -117,29 +109,33 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	vserver = module.params['vserver']
-	flexvol = module.params['flexvol']
+	aggr = module.params['aggregate']
+	cluster_id = module.params['cluster_id']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
+
+	if not token_id:
+		module.fail_json(msg="No Token!")
 
 	vp = StorageSystems(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.show_flexvol_details(
-		vserver=vserver,
-		flexvol=flexvol
+	res = vp.get_aggregate(
+		cluster_id=cluster_id,
+		aggregate=aggr
 	)
 
 	try:

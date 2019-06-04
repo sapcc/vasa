@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.storage_systems import StorageSystems
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -51,9 +51,9 @@ options:
     - vcenter user password
     required: true
 
-  controller_id:
+  cluster_id:
     description:
-    - id of the storage controller
+    - id of the storage cluster
     required: true
 '''
 
@@ -65,7 +65,7 @@ EXAMPLES = '''
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     controller_id: "{{ controller_id }}"
+     cluster_id: "{{ cluster_id }}"
 '''
 
 RETURN = '''
@@ -83,7 +83,7 @@ def main():
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			controller_id=dict(required=True, type='str')
+			cluster_id=dict(required=True, type='str')
 		),
 		supports_check_mode=True
 	)
@@ -92,27 +92,31 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	controller_id = module.params['controller_id']
+	cluster_id = module.params['cluster_id']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
+
+	if not token_id:
+		module.fail_json(msg="No Token!")
 
 	vp = StorageSystems(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.remove_storage_systems(
-		controller_id=controller_id
+	res = vp.delete_storage_system(
+		controller_id=cluster_id
 	)
 
 	try:
