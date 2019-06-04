@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.reports import Reports
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,13 +21,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_reports_virtual_machine_list
+module: vasa_reports_datastore
 
 short_description: reports of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- generate vsc virtual machines report of netapp vasa appliance
+- generate vsc datastores report of netapp vasa appliance
 
 
 options:
@@ -54,9 +54,9 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "generate vsc virtual machines report of vasa appliance {{ inventory_hostname }}"
+ - name: "generate vsc datastores report of vasa appliance {{ inventory_hostname }}"
    local_action:
-     module: vasa_reports_virtual_machine_list
+     module: vasa_reports_datastore
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
@@ -65,23 +65,25 @@ EXAMPLES = '''
 
 RETURN = '''
 {
-  "numOfRecords": 0,
-  "responseMessage": "string",
-  "return_code": "int",
-  "timestamp": 0,
-  "virtualMachines": [
+  "datastores": [
     {
-      "committedCapacity": 0,
-      "host": "string",
-      "hostMoRef": "string",
+      "freeCapacity": 0,
+      "freePercentage": 0,
+      "iops": 0,
       "latency": 0,
       "moRefType": "string",
       "moRefValue": "string",
       "name": "string",
-      "powerState": "string",
-      "uptime": 0
+      "totalCapacity": 0,
+      "type": "string",
+      "usedCapacity": 0,
+      "usedPercentage": 0
     }
-  ]
+  ],
+  "numOfRecords": 0,
+  "responseMessage": "string",
+  "timestamp": 0,
+  "return_code": "int"
 }
 '''
 
@@ -90,8 +92,8 @@ def main():
 	module = AnsibleModule(
 		argument_spec=dict(
 			host=dict(required=True, type='str'),
-			vcenter_user=dict(required=True, type='str'),
-			vcenter_password=dict(required=True, type='str', no_log='true'),
+			vc_user=dict(required=True, type='str'),
+			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143')
 		),
 		supports_check_mode=True
@@ -99,27 +101,28 @@ def main():
 
 	host = module.params['host']
 	port = module.params['port']
-	vc_user = module.params['vcenter_user']
-	vc_password = module.params['vcenter_password']
+	vc_user = module.params['vc_user']
+	vc_password = module.params['vc_password']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = Reports(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.virtual_machines()
+	res = vp.get_datastores_report()
 
 	try:
 		if res['status_code'] == 200:
