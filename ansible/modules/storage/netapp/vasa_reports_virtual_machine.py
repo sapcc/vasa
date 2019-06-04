@@ -9,8 +9,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible.module_utils.basic import AnsibleModule
 
-from pyvasa.log_management import LogManagement
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.reports import Reports
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,13 +21,14 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_log_management_delete
+module: vasa_reports_virtual_machine_list
 
-short_description: log management of netapp vasa unified appliance
+short_description: reports of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- delete sys-log details by given uuid
+- generate vsc virtual machines report of netapp vasa appliance
+
 
 options:
   host:
@@ -50,28 +51,37 @@ options:
     description:
     - vcenter user password
     required: true
-
-  uuid:
-    description:
-    - sys-log uuid
-    required: true
 '''
 
 EXAMPLES = '''
- - name: "delete sys-log details by given uuid"
+ - name: "generate vsc virtual machines report of vasa appliance {{ inventory_hostname }}"
    local_action:
-     module: vasa_log_management_delete
+     module: vasa_reports_virtual_machine_list
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     uuid: "{{ uuid }}"
 '''
 
 RETURN = '''
 {
+  "numOfRecords": 0,
   "responseMessage": "string",
-  "return_code": "int"
+  "return_code": "int",
+  "timestamp": 0,
+  "virtualMachines": [
+    {
+      "committedCapacity": 0,
+      "host": "string",
+      "hostMoRef": "string",
+      "latency": 0,
+      "moRefType": "string",
+      "moRefValue": "string",
+      "name": "string",
+      "powerState": "string",
+      "uptime": 0
+    }
+  ]
 }
 '''
 
@@ -82,8 +92,7 @@ def main():
 			host=dict(required=True, type='str'),
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143'),
-			uuid=dict(required=True, type='str')
+			port=dict(required=False, default='8143')
 		),
 		supports_check_mode=True
 	)
@@ -92,28 +101,26 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	uuid = module.params['uuid']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
-	vp = LogManagement(
+	vp = Reports(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.syslog_delete(
-		uuid=uuid
-	)
+	res = vp.get_virtual_machines_report()
 
 	try:
 		if res['status_code'] == 200:

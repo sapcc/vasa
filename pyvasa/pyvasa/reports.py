@@ -17,7 +17,7 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class Reports(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port
+		self.port = str(port)
 		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/report/"
 
 		if token is not None:
