@@ -76,7 +76,7 @@ class Datastore(object):
 
 		return mounts
 
-	def unmount_datastore(self, ds_name=None, ds_type=None, host_ids=None):
+	def unmount_datastore(self, ds_moref=None, ds_type=None, host_ids=None):
 		api_endpoint = "/unmount"
 		url_action = self.url + api_endpoint
 		headers = {
@@ -85,7 +85,7 @@ class Datastore(object):
 		}
 
 		payload = {
-			'datastoreName': ds_name,
+			'datastoreMoref': ds_moref,
 			'datastoreType': ds_type,
 			'hostMoref': [
 				host_ids
@@ -118,7 +118,8 @@ class Datastore(object):
 			"defaultSCP": scp,
 			"description": description,
 			"flexVolSCPMap": {
-				flexvol #"vv0_BB099_01":"cc_scp_vvol"
+				#flexvol
+				"vvol_d066961":"cc_scp_vvol"
 			},
 			"name": ds_name,
 			"protocol": protocol,

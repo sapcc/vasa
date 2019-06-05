@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.datastore import Datastore
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -136,22 +136,23 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = Datastore(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.storage_add(
+	res = vp.add_storage(
 		ds_type=ds_type,
 		ds_name=ds_name,
 		cluster_ip=cluster_ip,
