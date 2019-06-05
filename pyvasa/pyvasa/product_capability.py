@@ -17,8 +17,8 @@ os.environ["CURL_CA_BUNDLE"] = ""
 class ProductCapability(object):
 	def __init__(self, port=None, url=None, token=None, api_version='1.0'):
 		self.api = api_version
-		self.port = port + "/" + self.api
-		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/product-capabilities"
+		self.port = str(port)
+		self.url = "https://" + url + ":" + self.port + "/api/rest/" + self.api + "/admin/product-capabilities"
 
 		if token is not None:
 			self.token = token
@@ -32,7 +32,11 @@ class ProductCapability(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		details = r.json()
+		try:
+			details = r.json()
+		except ValueError:
+			details = dict()
+
 		details['status_code'] = r.status_code
 
 		return details
@@ -47,7 +51,11 @@ class ProductCapability(object):
 
 		r = requests.get(url=url_action, headers=headers, verify=False)
 
-		status = r.json()
+		try:
+			status = r.json()
+		except ValueError:
+			status = dict()
+
 		status['status_code'] = r.status_code
 
 		return status
@@ -67,7 +75,11 @@ class ProductCapability(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		vp = r.json()
+		try:
+			vp = r.json()
+		except ValueError:
+			vp = dict()
+
 		vp['status_code'] = r.status_code
 
 		return vp
@@ -87,7 +99,11 @@ class ProductCapability(object):
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
-		sra = r.json()
+		try:
+			sra = r.json()
+		except ValueError:
+			sra = dict()
+
 		sra['status_code'] = r.status_code
 
 		return sra
@@ -103,7 +119,11 @@ class ProductCapability(object):
 
 		r = requests.put(url=url_action, headers=headers, verify=False)
 
-		serivce_restart = r.json()
+		try:
+			serivce_restart = r.json()
+		except ValueError:
+			serivce_restart = dict()
+
 		serivce_restart['status_code'] = r.status_code
 
 		return serivce_restart
