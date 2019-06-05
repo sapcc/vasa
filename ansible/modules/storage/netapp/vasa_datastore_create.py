@@ -110,7 +110,7 @@ EXAMPLES = '''
      ds_type: "{{ datastore_type }}"
      scp: "{{ scp }}"
      description: "{{ description }}"
-     flexvol: "{{ flexvol }}"
+     flexvol: "{{ "volume_name":"scp_name" }}"
      ds_name: "{{ datastore_name }}"
      protocol: "{{ protocol }}"
      target: "{{ target }}"
