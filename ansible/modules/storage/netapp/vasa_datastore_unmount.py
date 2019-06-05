@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.datastore import Datastore
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -51,9 +51,9 @@ options:
     - vcenter user password
     required: true
 
-  ds_name:
+  ds_moref:
     description:
-    - name of the datastore
+    - moref object of the datastore
     required: true
 
   ds_type:
@@ -75,7 +75,7 @@ EXAMPLES = '''
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     ds_name: "{{ datastore_name }}"
+     ds_moref: "{{ datastore_moref }}"
      ds_type: "{{ datastore_type }}"
      host_ids: "{{ host_list }}"
 '''
@@ -95,7 +95,7 @@ def main():
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			ds_name=dict(required=True, type='str'),
+			ds_moref=dict(required=True, type='str'),
 			ds_type=dict(required=True, type='str'),
 			host_ids=dict(required=True, type='str')
 		),
@@ -106,29 +106,30 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	ds_name = module.params['ds_name']
+	ds_moref = module.params['ds_moref']
 	ds_type = module.params['ds_type']
 	host_ids = module.params['host_ids']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = Datastore(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.unmount(
-		ds_name=ds_name,
+	res = vp.unmount_datastore(
+		ds_moref=ds_moref,
 		ds_type=ds_type,
 		host_ids=host_ids
 	)

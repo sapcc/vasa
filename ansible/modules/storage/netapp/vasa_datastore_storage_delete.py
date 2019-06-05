@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.datastore import Datastore
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -21,7 +21,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_datastore_storage_remove
+module: vasa_datastore_storage_delete
 
 short_description: datastore handle of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -70,7 +70,7 @@ options:
 EXAMPLES = '''
  - name: "remove flexvol(s) from a datastore"
    local_action:
-     module: vasa_datastore_storage_remove
+     module: vasa_datastore_storage_delete
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
@@ -112,22 +112,23 @@ def main():
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = Datastore(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
-	res = vp.storage_remove(
+	res = vp.delete_storage(
 		ds_type=ds_type,
 		ds_name=ds_name,
 		volume=volume
