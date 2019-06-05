@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function
 from ansible.module_utils.basic import AnsibleModule
 
 from pyvasa.product_capability import ProductCapability
-from pyvasa.vasa_connect import VasaConnection
+from pyvasa.user_authentication import UserAuthentication
 
 __metaclass__ = type
 
@@ -80,8 +80,8 @@ def main():
 	module = AnsibleModule(
 		argument_spec=dict(
 			host=dict(required=True, type='str'),
-			vcenter_user=dict(required=True, type='str'),
-			vcenter_password=dict(required=True, type='str', no_log='true'),
+			vc_user=dict(required=True, type='str'),
+			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
 			service=dict(required=True, type='str')
 		),
@@ -90,25 +90,26 @@ def main():
 
 	host = module.params['host']
 	port = module.params['port']
-	vc_user = module.params['vcenter_user']
-	vc_password = module.params['vcenter_password']
+	vc_user = module.params['vc_user']
+	vc_password = module.params['vc_password']
 	service = module.params['service']
 
 	result = dict(changed=False)
 
-	connect = VasaConnection(
+	connect = UserAuthentication(
 		port=port,
 		url=host,
 		vcenter_user=vc_user,
 		vcenter_password=vc_password
 	)
 
-	token = connect.new_token()
+	token = connect.login()
+	token_id = token.get('vmwareApiSessionId')
 
 	vp = ProductCapability(
 		port=port,
 		url=host,
-		token=token
+		token=token_id
 	)
 
 	res = vp.restart_service(
