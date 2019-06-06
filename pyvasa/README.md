@@ -1,9 +1,11 @@
 ## Python package for NetApp VASA Appliance
 
 * name='pyvasa'  
-* version='1.0'
+* version='1.0rc1'
 * description='Python package for NetApp VASA Appliance'
-* license='license'
+* supports only NetApp VASA 7.2.1 REST API
+* unsupported package
+* REST API Documentation: `https://<vasa_url>:8143/api/rest/swagger-ui.html#/`
 
 ### Installation
 

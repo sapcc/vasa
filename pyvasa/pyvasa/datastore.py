@@ -110,16 +110,14 @@ class Datastore(object):
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
 		}
-		#ToDo: flexVolSCPMap volumename:scp
-
+		#ToDo: flexVolSCPMap "volumename":"scp"
 		payload = {
 			"clusterIp": cluster_ip,
 			"dataStoreType": ds_type,
 			"defaultSCP": scp,
 			"description": description,
 			"flexVolSCPMap": {
-				#flexvol
-				"vvol_d066961":"cc_scp_vvol"
+				flexvol
 			},
 			"name": ds_name,
 			"protocol": protocol,
