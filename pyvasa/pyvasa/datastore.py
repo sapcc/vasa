@@ -110,15 +110,17 @@ class Datastore(object):
 			'Accept': 'application/json',
 			'vmware-api-session-id': self.token
 		}
-		#ToDo: flexVolSCPMap "volumename":"scp"
+		"""
+		flexvol must have a dict. eg.: 
+			flexvol:
+				'vvol_01': 'scp_gold'
+		"""
 		payload = {
 			"clusterIp": cluster_ip,
 			"dataStoreType": ds_type,
 			"defaultSCP": scp,
 			"description": description,
-			"flexVolSCPMap": {
-				flexvol
-			},
+			"flexVolSCPMap": flexvol,
 			"name": ds_name,
 			"protocol": protocol,
 			"targetMoref": target,

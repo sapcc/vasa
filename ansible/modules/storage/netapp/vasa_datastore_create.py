@@ -137,7 +137,7 @@ def main():
 			ds_type=dict(required=False, default='VVOL'),
 			scp=dict(required=True, type='str'),
 			description=dict(required=True, type='str'),
-			flexvol=dict(required=True, type='str'),
+			flexvol=dict(required=True, type='dict'),
 			ds_name=dict(required=True, type='str'),
 			protocol=dict(required=True, type='str'),
 			target=dict(required=True, type='str'),
