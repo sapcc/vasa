@@ -200,11 +200,9 @@ class StorageCapabilityProfile(object):
 			"baseProfileName": profile_name,
 			"storageCapabilityProfile": {
 				"capabilities": {
-					"adaptiveQoS": qos,
 					"compression": compression,
 					"deduplication": deduplication,
 					"encryption": encryption,
-					"maxThroughputIops": iops,
 					"platformType": platform,
 					"spaceEfficiency": space_efficiency,
 					"tieringPolicy": tiering_policy
@@ -214,6 +212,11 @@ class StorageCapabilityProfile(object):
 				"name": new_profile_name
 				}
 			}
+
+		if not iops:
+			payload["storageCapabilityProfile"]["capabilities"]["adaptiveQoS"] = qos.upper()
+		else:
+			payload["storageCapabilityProfile"]["capabilities"]["maxThroughputIops"] = iops
 
 		r = requests.post(url=url_action, headers=headers, json=payload, verify=False)
 
