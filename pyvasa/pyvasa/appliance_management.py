@@ -22,6 +22,7 @@ class ApplianceManagement(object):
 		self.url = "https://" + str(url) + ":" + self.port + "/api/rest/" + self.api + "/appliance/management/"
 		self.vp_user = vp_user
 		self.vp_password = vp_password
+		self.vp_url = str(url)
 
 	def get_ssh_status(self):
 		api_endpoint = "ssh"
@@ -520,7 +521,8 @@ class ApplianceManagement(object):
 
 	def update_sys_log(self, uuid=None, host=None, level=None, pattern=None, log_port=None, token=None):
 		api_endpoint = "log-config/sys-log"
-		url_action = self.url + api_endpoint
+		url = "https://" + self.vp_url + ":" + self.port + "/api/rest/" + self.api + "/appliance-management/"
+		url_action = url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token,
@@ -547,7 +549,8 @@ class ApplianceManagement(object):
 
 	def set_sys_log(self, host=None, level=None, pattern=None, log_port=None, token=None):
 		api_endpoint = "log-config/sys-log"
-		url_action = self.url + api_endpoint
+		url = "https://" + self.vp_url + ":" + self.port + "/api/rest/" + self.api + "/appliance-management/"
+		url_action = url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token
@@ -573,7 +576,8 @@ class ApplianceManagement(object):
 
 	def get_sys_log(self, uuid=None, token=None):
 		api_endpoint = "log-config/sys-log"
-		url_action = self.url + api_endpoint
+		url = "https://" + self.vp_url + ":" + self.port + "/api/rest/" + self.api + "/appliance-management/"
+		url_action = url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token,
@@ -593,7 +597,8 @@ class ApplianceManagement(object):
 
 	def delete_sys_log(self, uuid=None, token=None):
 		api_endpoint = "log-config/sys-log"
-		url_action = self.url + api_endpoint
+		url = "https://" + self.vp_url + ":" + self.port + "/api/rest/" + self.api + "/appliance-management/"
+		url_action = url + api_endpoint
 		headers = {
 			'Accept': 'application/json',
 			'vmware-api-session-id': token,
