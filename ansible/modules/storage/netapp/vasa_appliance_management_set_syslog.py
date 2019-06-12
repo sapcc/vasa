@@ -20,7 +20,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_log_management_create
+module: vasa_appliance_management_set_syslog
 
 short_description: log management of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
@@ -74,7 +74,7 @@ options:
 EXAMPLES = '''
  - name: "create sys-log for netapp vasa appliance"
    local_action:
-     module: vasa_log_management_create
+     module: vasa_appliance_management_set_syslog
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"

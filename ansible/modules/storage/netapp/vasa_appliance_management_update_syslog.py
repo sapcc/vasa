@@ -20,13 +20,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_get_syslog
+module: vasa_appliance_management_update_syslog
 
 short_description: log management of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show sys-log details by given uuid
+- update sys-log for netapp vasa appliance
 
 options:
   host:
@@ -50,21 +50,45 @@ options:
     - vcenter user password
     required: true
 
+  hostname:
+    description:
+    - sys-log hostname
+    required: true
+
+  level:
+    description:
+    - select log level for VP or SVC (accepted values - INFO, ERROR, DEBUG, TRACE, WARN, FATAL, OFF and ALL)
+    required: true
+
+  pattern:
+    description:
+    - sys-log pattern (accepted values - "%d (%t) %-5p [%c{1}] - %m%n")
+    required: true
+
+  log_port:
+    description:
+    - sys-log port (acceptable port range is from 1 to 65535)
+    required: true
+    
   uuid:
     description:
-    - sys-log uuid
+    - syslog uuid
     required: true
 '''
 
 EXAMPLES = '''
- - name: "show sys-log details by given uuid"
+ - name: "update sys-log for netapp vasa appliance"
    local_action:
-     module: vasa_appliance_management_get_syslog
+     module: vasa_appliance_management_update_syslog
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     uuid: "{{ uuid }}"
+     hostname: "{{ hostname }}"
+     level: "{{ log_level }}"
+     pattern: "{{ pattern }}"
+     log_port: "{{ log_port }}"
+     uuid: "{{ uuid_of_syslog }}"
 '''
 
 RETURN = '''
@@ -75,7 +99,8 @@ RETURN = '''
   "pattern": "string",
   "port": "string",
   "responseMessage": "string",
-  "return_code": "int"
+  "status_code": "int",
+  "uuid": "string"
 }
 '''
 
@@ -84,11 +109,15 @@ def main():
 	module = AnsibleModule(
 		argument_spec=dict(
 			host=dict(required=True, type='str'),
-			username=dict(required=True, type='str'),
-			password=dict(required=True, type='str', no_log='true'),
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
-			port=dict(required=False, default='8143'),
+			port=dict(required=False, default=8143),
+			username=dict(required=True, type='str'),
+			password=dict(required=True, type='str', no_log='true'),
+			hostname=dict(required=True, type='str'),
+			level=dict(required=True, type='str'),
+			pattern=dict(required=True, type='str'),
+			log_port=dict(required=True, type='str'),
 			uuid=dict(required=True, type='str')
 		),
 		supports_check_mode=True
@@ -96,11 +125,16 @@ def main():
 
 	host = module.params['host']
 	port = module.params['port']
-	username = module.params['username']
-	password = module.params['password']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
+	hostname = module.params['hostname']
+	level = module.params['level']
+	pattern = module.params['pattern']
+	log_port = module.params['log_port']
+	username = module.params['username']
+	password = module.params['password']
 	uuid = module.params['uuid']
+
 
 	result = dict(changed=False)
 
@@ -118,29 +152,33 @@ def main():
 		module.fail_json(msg="No Token!")
 
 	vp = ApplianceManagement(
-		vp_user=username,
-		vp_password=password,
+		port=port,
 		url=host,
-		port=port
-
+		vp_user=username,
+		vp_password=password
 	)
 
-	res = vp.get_sys_log(
-		uuid=uuid,
-		token=token_id
+	res = vp.update_sys_log(
+		token=token_id,
+		host=hostname,
+		level=level,
+		pattern=pattern,
+		log_port=log_port,
+		uuid=uuid
 	)
 
 	try:
 		if res['status_code'] == 200:
 			result.update(result=res)
 			result.update(changed=True)
+
 		else:
 			result.update(result=res)
 			result.update(changed=False)
 			result.update(failed=True)
 
 	except BaseException as e:
-		module.fail_json(message=e.message)
+		module.fail_json(msg=e.message)
 
 	module.exit_json(**result)
 
