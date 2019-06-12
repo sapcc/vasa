@@ -20,13 +20,13 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vasa_appliance_management_get_syslog
+module: vasa_appliance_management_delete_syslog
 
 short_description: log management of netapp vasa unified appliance
 author: Hannes Ebelt (hannes.ebelt@sap.com)
 
 description:
-- show sys-log details by given uuid
+- delete sys-log by given uuid
 
 options:
   host:
@@ -57,9 +57,9 @@ options:
 '''
 
 EXAMPLES = '''
- - name: "show sys-log details by given uuid"
+ - name: "delete sys-log by given uuid"
    local_action:
-     module: vasa_appliance_management_get_syslog
+     module: vasa_appliance_management_delete_syslog
      host: "{{ inventory_hostname }}"
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
@@ -69,13 +69,9 @@ EXAMPLES = '''
 
 RETURN = '''
 {
-  "hostname": "string",
-  "id": "string",
-  "logLevel": "string",
-  "pattern": "string",
-  "port": "string",
   "responseMessage": "string",
-  "return_code": "int"
+  "status_code": "int",
+  "uuid": "string"
 }
 '''
 
@@ -125,7 +121,7 @@ def main():
 
 	)
 
-	res = vp.get_sys_log(
+	res = vp.delete_sys_log(
 		uuid=uuid,
 		token=token_id
 	)
