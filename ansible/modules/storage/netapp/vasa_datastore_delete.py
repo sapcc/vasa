@@ -51,9 +51,9 @@ options:
     - vcenter user password
     required: true
 
-  ds_name:
+  ds_moref:
     description:
-    - name of the datastore
+    - moref of the datastore
     required: true
 
   ds_type:
@@ -70,7 +70,7 @@ EXAMPLES = '''
      port: "{{ appliance_port }}"
      vc_user: "{{ vcenter_username }}"
      vc_password: "{{ vcenter_password }}"
-     ds_name: "{{ datastore_name }}"
+     ds_moref: "{{ datastore_moref }}"
      ds_type: "{{ datastore_type }}"
 '''
 
@@ -89,7 +89,7 @@ def main():
 			vc_user=dict(required=True, type='str'),
 			vc_password=dict(required=True, type='str', no_log='true'),
 			port=dict(required=False, default='8143'),
-			ds_name=dict(required=True, type='str'),
+			ds_moref=dict(required=True, type='str'),
 			ds_type=dict(required=True, type='str')
 		),
 		supports_check_mode=True
@@ -99,7 +99,7 @@ def main():
 	port = module.params['port']
 	vc_user = module.params['vc_user']
 	vc_password = module.params['vc_password']
-	ds_name = module.params['ds_name']
+	ds_moref = module.params['ds_moref']
 	ds_type = module.params['ds_type']
 
 	result = dict(changed=False)
@@ -121,7 +121,7 @@ def main():
 	)
 
 	res = vp.delete_datastore(
-		ds_moref=ds_name,
+		ds_moref=ds_moref,
 		ds_type=ds_type
 	)
 
